@@ -52,7 +52,6 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         hero.setId(newId);
         return hero;
-        // add in list of superpowers as well?
     }
 
     @Override
@@ -72,7 +71,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             List<SuperPower> powersForHero = this.getAllPowersForHero(aHero.getId());
             aHero.setHeroPowers(powersForHero);
         }
-        
+
         return heroes;
     }
 
@@ -81,26 +80,24 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         final String SQL_UPDATE_A_HERO = "UPDATE heroes "
                 + "SET HeroName = ?, IsHero = ?, Description = ? "
                 + "WHERE Id = ?";
-        
-        heySql.update(SQL_UPDATE_A_HERO, 
+
+        heySql.update(SQL_UPDATE_A_HERO,
                 hero.getName(), hero.getIsHero(), hero.getDescription(),
                 hero.getId());
-        
+
         this.removeAllPowersFromHero(hero.getId());
         this.addPowersToHero(hero.getHeroPowers(), hero.getId());
-        // remove and then add sightings to hero
-        // remove and then add orgs to hero
     }
 
     @Override
     @Transactional
     public void removeHero(int id) {
         this.removeAllPowersFromHero(id);
+        this.removeAllOrgsFromHero(id);
+        this.removeAllSightingsFromHero(id);
+        this.removeSightingsWithNoHeroes();
         final String SQL_DELETE_HERO = "DELETE FROM heroes WHERE id = ?";
         heySql.update(SQL_DELETE_HERO, id);
-        // remove heros/orgs association
-        // remove heroes/superpowers association
-        // remove heroes/sightings association AND sighting IF only one
     }
 
     private static final class HeroMapper implements RowMapper<Hero> {
@@ -225,19 +222,19 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public Sighting addSighting(Sighting sighting) {
         // list of heroes
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Sighting getASighting(int id) {
-        // list of heroes
+        // has list of heroes
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<Sighting> getAllSightings() {
-        // list of heroes
+        // has list of heroes
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -251,9 +248,10 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public void removeSighting(int id) {
-        // remove heroes/sightings association
-        // remove location if only sighting and no orgLoc?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.removeAllHeroesFromSightings(id);
+        final String SQL_DELETE_SIGHTING = "DELETE FROM sightings WHERE Id = ?";
+        // remove location if no other sightings or orgLoc?
+        heySql.update(SQL_DELETE_SIGHTING, id);
     }
 
     /*
@@ -295,14 +293,19 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editSuperpower(SuperPower superpower) {
-        final String UPDATE_A_POWER = 
+        final String UPDATE_A_POWER = "UPDATE superpowers "
+                + "SET PowerName = ? "
+                + "WHERE Id = ?";
+
+        heySql.update(UPDATE_A_POWER, superpower.getName(), superpower.getId());
     }
 
     @Override
     @Transactional
     public void removeSuperpower(int id) {
-        // remove association with superhero
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.removeAllHeroesFromPower(id);
+        final String DELETE_POWER = "DELETE FROM superpowers WHERE Id = ?";
+        heySql.update(DELETE_POWER, id);
     }
 
     private static final class PowerMapper implements RowMapper<SuperPower> {
@@ -329,29 +332,58 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
      */
+    /////////////////////////// HERO HELPERS ///////////////////////////
     private List<SuperPower> getAllPowersForHero(int heroId) {
         String SQL_POWERS_FOR_HERO = "SELECT * FROM SuperPowers "
                 + "JOIN heroesandsuperpowers ON heroesandsuperpowers.SuperPowerId = superpowers.Id "
                 + "WHERE heroesandsuperpowers.HeroId = ?";
         return heySql.query(SQL_POWERS_FOR_HERO, new PowerMapper(), heroId);
     }
-    
+
     private void removeAllPowersFromHero(int heroId) {
         String SQL_REMOVE_POWERS_FROM_HERO = "DELETE FROM heroesandsuperpowers WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_POWERS_FROM_HERO, heroId);
     }
-    
+
     private void addPowerToHero(int superPowerId, int heroId) {
         String SQL_HERO_POWER = "INSERT INTO `heroesandsuperpowers` (`HeroId`, `SuperPowerId`) VALUES (?, ?)";
         heySql.update(SQL_HERO_POWER, superPowerId, heroId);
     }
-    
+
     private void addPowersToHero(List<SuperPower> heroPowers, int heroId) {
         for (SuperPower aPower : heroPowers) {
             this.addPowerToHero(aPower.getId(), heroId);
         }
     }
-    
-    /////////////////////////// MORE HELPERS ///////////////////////
 
+    private void removeAllOrgsFromHero(int heroId) {
+        String SQL_REMOVE_ORGS_FROM_HERO = "DELETE FROM heroesandorganizations WHERE HeroId = ?";
+        heySql.update(SQL_REMOVE_ORGS_FROM_HERO, heroId);
+    }
+
+    private void removeAllSightingsFromHero(int heroId) {
+        String SQL_REMOVE_SIGHTINGS_FROM_HERO = "DELETE FROM heroesandsightings WHERE HeroId = ?";
+        heySql.update(SQL_REMOVE_SIGHTINGS_FROM_HERO, heroId);
+    }
+
+    private void removeSightingsWithNoHeroes() {
+        List<Sighting> allSightings = getAllSightings();
+        for (Sighting aSighting : allSightings) {
+            if (aSighting.getHeroesAtSighting().isEmpty()) {
+                this.removeSighting(aSighting.getId());
+            }
+        }
+    }
+
+    /////////////////////////// SIGHTINGS HELPERS ///////////////////////////
+    private void removeAllHeroesFromSightings(int sightingId) {
+        String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
+        heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
+    }
+
+    /////////////////////////// POWER HELPERS ///////////////////////////
+    private void removeAllHeroesFromPower(int powerId) {
+        String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
+        heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
+    }
 }

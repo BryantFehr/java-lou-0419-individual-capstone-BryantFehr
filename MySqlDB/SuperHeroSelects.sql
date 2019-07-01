@@ -22,14 +22,32 @@ WHERE heroesandsuperpowers.HeroId = 1;
 
 
 -- UPDATES AND DELETES FOR DAO IMPL
+-- UPDATE A HERO --
 UPDATE heroes
 SET HeroName = 'Batman', IsHero = '1', Description = 'battty'
 WHERE Id = 1;
 
-DELETE FROM heroesandsuperpowers WHERE HeroId = 1;
+-- DELETE A HERO
+DELETE FROM heroesandsuperpowers WHERE HeroId = 2;
+DELETE FROM heroesandorganizations WHERE HeroId = 2;
+DELETE FROM heroesandsightings WHERE HeroId = 2;
+DELETE FROM heroes WHERE Id = 2;
 
-UPDATE superpowers
-SET 
+-- DELETE A SIGHTING --
+DELETE FROM heroesandsightings WHERE SightingId = 1;
+DELETE FROM sightings WHERE Id = 1;
+
+
+
+
+
+
+-- UPDATE A POWER --
+UPDATE superpowers SET PowerName = 'test' WHERE Id = 1;
+
+-- DELETE A POWER --
+DELETE FROM heroesandsuperpowers WHERE SuperPowerId = 1;
+DELETE FROM superpowers WHERE Id = 1;
 
 -- JUST CHECKING THAT MY DATA WAS INPUT PROPERLY --
 SELECT

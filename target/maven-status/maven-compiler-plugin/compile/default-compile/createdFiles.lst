@@ -1,1 +1,12 @@
+com\tsg\superherosighting\dao\SuperDao.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$PowerMapper.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$HeroMapper.class
 com\tsg\superherosighting\controllers\SuperController.class
+com\tsg\superherosighting\dto\Sighting.class
+com\tsg\superherosighting\dto\Organization.class
+com\tsg\superherosighting\dto\Hero.class
+com\tsg\superherosighting\dto\SuperPower.class
+com\tsg\superherosighting\dto\Location.class
+com\tsg\superherosighting\SuperApp.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$1.class
