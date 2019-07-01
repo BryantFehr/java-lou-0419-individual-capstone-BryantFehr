@@ -91,7 +91,6 @@ public class SuperDaoPowersTest extends TestDBSetUpMethods {
         testDao.removeSuperpower(testPower.getId());
         allPowers = testDao.getAllSuperpowers();
 
-        Assert.assertNotNull("List of powers should still not be null", allPowers);
         Assert.assertFalse("List of powers should NOT include testPower", allPowers.contains(testPower));
         Assert.assertTrue("List of powers should still include rich", allPowers.contains(testDao.getASuperpower(1)));
         Assert.assertTrue("List of powers should still include genius", allPowers.contains(testDao.getASuperpower(2)));

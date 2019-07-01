@@ -5,6 +5,7 @@
  */
 package com.tsg.superherosighting.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Organization {
     private String name;
     private String description;
     private String contact;
-    private List<Hero> heroesInOrg;
+    private List<Hero> heroesInOrg = new ArrayList();
     private Location orgLoc;
 
 }

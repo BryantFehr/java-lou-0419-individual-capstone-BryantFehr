@@ -5,6 +5,7 @@
  */
 package com.tsg.superherosighting.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,6 @@ public class Hero {
     private String name;
     private Boolean isHero;
     private String Description;
-    private List<SuperPower> heroPowers;
+    private List<SuperPower> heroPowers = new ArrayList();
 
 }
