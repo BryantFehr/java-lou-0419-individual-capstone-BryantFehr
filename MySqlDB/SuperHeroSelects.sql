@@ -13,6 +13,8 @@ SELECT * FROM heroes WHERE id = 1;
 
 SELECT * FROM SuperPowers WHERE id = 1;
 
+SELECT * FROM locations WHERE id = 1;
+
 SELECT * FROM SuperPowers
 JOIN heroesandsuperpowers ON heroesandsuperpowers.SuperPowerId = superpowers.Id
 WHERE heroesandsuperpowers.HeroId = 1;

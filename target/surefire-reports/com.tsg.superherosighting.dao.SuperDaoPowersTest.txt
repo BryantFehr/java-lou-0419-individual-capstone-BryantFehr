@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.tsg.superherosighting.dao.SuperDaoPowersTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.281 s - in com.tsg.superherosighting.dao.SuperDaoPowersTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 s - in com.tsg.superherosighting.dao.SuperDaoPowersTest

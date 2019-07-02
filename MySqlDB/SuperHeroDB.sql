@@ -12,16 +12,16 @@ IsHero BOOLEAN NOT NULL,
 
 CREATE TABLE SuperPowers(
 Id INT PRIMARY KEY AUTO_INCREMENT,
-PowerName VARCHAR(100)
+PowerName VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Locations(
 Id INT PRIMARY KEY AUTO_INCREMENT,
-LocName VARCHAR(100) NULL,
-`Description` VARCHAR(250) NULL,
-Address VARCHAR (150) NULL,
-Latitude Decimal(10,8),
-Longitude Decimal(10,8)
+LocName VARCHAR(100) NOT NULL,
+`Description` VARCHAR(250) NOT NULL,
+Address VARCHAR (150) NOT NULL,
+Latitude Decimal(10,8) NOT NULL,
+Longitude Decimal(10,8) NOT NULL
 );
 
 CREATE TABLE Sightings(
@@ -79,3 +79,5 @@ FOREIGN KEY (HeroId) REFERENCES Heroes(Id);
 
 ALTER TABLE HeroesAndSuperPowers ADD CONSTRAINT fk_HeroesAndSuperPowersToSuperPowers
 FOREIGN KEY (SuperPowerId) REFERENCES SuperPowers(Id);
+
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000');

@@ -9,5 +9,6 @@ com\tsg\superherosighting\dto\Hero.class
 com\tsg\superherosighting\dto\SuperPower.class
 com\tsg\superherosighting\dto\Location.class
 com\tsg\superherosighting\SuperApp.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$OrgMapper.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl.class
-com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$1.class
+com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$LocMapper.class

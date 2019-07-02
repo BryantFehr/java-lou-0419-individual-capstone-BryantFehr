@@ -12,6 +12,7 @@ import com.tsg.superherosighting.dto.Sighting;
 import com.tsg.superherosighting.dto.SuperPower;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,12 +96,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         this.removeAllPowersFromHero(id);
         this.removeAllOrgsFromHero(id);
         this.removeAllSightingsFromHero(id);
-        // this.removeSightingsWithNoHeroes();
+        this.removeSightingsWithNoHeroes();
         final String SQL_DELETE_HERO = "DELETE FROM heroes WHERE id = ?";
         heySql.update(SQL_DELETE_HERO, id);
     }
 
-    private static final class HeroMapper implements RowMapper<Hero> {
+    public class HeroMapper implements RowMapper<Hero> {
 
         @Override
         public Hero mapRow(ResultSet rs, int index) throws SQLException {
@@ -130,17 +131,25 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Location addLocation(Location location) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String INSERT_LOCATION_INTO_LOCATIONS = "INSERT INTO locations (LocName, Description, Address, Latitude, Longitude) VALUES (?, ?, ?, ?, ?)";
+        heySql.update(INSERT_LOCATION_INTO_LOCATIONS, location.getName(), location.getDescription(), location.getAddress(), location.getLatitude(), location.getLongitude());
+        int newId = heySql.queryForObject("SELECT_LAST_INSERT_ID()", Integer.class);
+        location.setId(newId);
+        return location;
     }
 
     @Override
-    public Hero getALocation(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Location getALocation(int id) {
+        final String GET_A_SINGLE_LOCATION = "SELECT * FROM locations WHERE id = ?";
+        Location aLoc = heySql.queryForObject(GET_A_SINGLE_LOCATION, new LocMapper(), id);
+        return aLoc;
     }
 
     @Override
     public List<Location> getAllLocations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_ALL_LOCATIONS = "SELECT * FROM locations";
+        List<Location> locations = heySql.query(GET_ALL_LOCATIONS, new LocMapper());
+        return locations;
     }
 
     @Override
@@ -154,8 +163,30 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public void removeLocation(int id) {
         // remove sighting because sighting is useless without a location
+        // update orgs to NA location
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public class LocMapper implements RowMapper<Location> {
+
+        @Override
+        public Location mapRow(ResultSet rs, int index) throws SQLException {
+            Location location = new Location();
+            location.setId(rs.getInt("Id"));
+            location.setName(rs.getString("LocName"));
+            location.setDescription(rs.getString("Description"));
+            location.setAddress(rs.getString("Address"));
+            location.setLatitude(rs.getBigDecimal("Latitude"));
+            location.setLongitude(rs.getBigDecimal("Longitude"));
+            
+            return location;
+        }
+    }
+
+//            hero.setId(rs.getInt("Id"));
+//            hero.setName(rs.getString("HeroName"));
+//            hero.setIsHero(rs.getBoolean("IsHero"));
+//            hero.setDescription(rs.getString("Description"));
 
     /*
  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------.
@@ -173,22 +204,33 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Organization addOrganization(Organization organization) {
-        // add in list of heroes as well?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String INSERT_ORG_INTO_ORGANIZATIONS = "INSERT INTO organizations (LocId, OrgName, Description, Contact) VALUES (?, ?, ?, ?)";
+        heySql.update(INSERT_ORG_INTO_ORGANIZATIONS, organization.getOrgLoc().getId(), organization.getName(), organization.getDescription(), organization.getContact());
+        int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        organization.setId(newId);
+        return organization;
     }
 
     @Override
     public Organization getAnOrganization(int id) {
-        // and get a list of heroes in org
-        // get a location?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_A_SINGLE_ORG = "SELECT * FROM organizations WHERE id = ?";
+        Organization organization = heySql.queryForObject(GET_A_SINGLE_ORG, new OrgMapper(), id);
+        List<Hero> HeroesForOrg = this.getAllHeroesForOrg(organization.getId());
+        organization.setHeroesInOrg(HeroesForOrg);
+        // location should already be inside of
+        return organization;
     }
 
     @Override
     public List<Organization> getAllOrganizations() {
-        // and get a list of heroes in all orgs
-        // get locations?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_ALL_ORGS = "SELECT * FROM organizations";
+        List<Organization> orgs = heySql.query(GET_ALL_ORGS, new OrgMapper());
+        for (Organization org : orgs) {
+            List<Hero> heroesForOrgs = this.getAllHeroesForOrg(org.getId());
+            org.setHeroesInOrg(heroesForOrgs);
+        }
+        // location should already be inside of
+        return orgs;
     }
 
     @Override
@@ -203,6 +245,22 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // remove association with heroes
         // remove location if no sightingsn have same location
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public class OrgMapper implements RowMapper<Organization> {
+
+        @Override
+        public Organization mapRow(ResultSet rs, int index) throws SQLException {
+            Organization organization = new Organization();
+            organization.setId(rs.getInt("Id"));
+            organization.setName(rs.getString("OrgName"));
+            organization.setDescription(rs.getString("Description"));
+            organization.setContact(rs.getString("Contact"));
+            int locId = rs.getInt("LocId");
+            organization.setOrgLoc(getALocation(locId));
+
+            return organization;
+        }
     }
 
     /*
@@ -221,21 +279,34 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Sighting addSighting(Sighting sighting) {
-        // list of heroes
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String INSERT_SIGHTING_INTO_SIGHTINGS = "INSERT INTO sightings (LocId, DateTime) VALUES (?, ?)";
+        heySql.update(INSERT_SIGHTING_INTO_SIGHTINGS, sighting.getSightLocation().getId(), sighting.getDateTime());
+        int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        sighting.setId(newId);
+        return sighting;
     }
 
     @Override
     public Sighting getASighting(int id) {
-        // has list of heroes
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_A_SINGLE_SIGHTING = "SELECT * FROM sightings WHERE id = ?";
+        Sighting aSighting = heySql.queryForObject(GET_A_SINGLE_SIGHTING, new SightingMapper(), id);
+        List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
+        aSighting.setHeroesAtSighting(heroesAtSighting);
+        // location should already be inside of
+        return aSighting;
+        
     }
 
     @Override
     public List<Sighting> getAllSightings() {
-        // has list of heroes
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String GET_ALL_SIGHTINGS = "SELECT * FROM sightings";
+        List<Sighting> sightings = heySql.query(GET_ALL_SIGHTINGS, new SightingMapper());
+        for (Sighting aSighting : sightings) {
+            List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
+            aSighting.setHeroesAtSighting(heroesAtSighting);
+        }
+        // location should already be inside of
+        return sightings;
     }
 
     @Override
@@ -253,19 +324,25 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // remove location if no other sightings or orgLoc?
         heySql.update(SQL_DELETE_SIGHTING, id);
     }
-    
-    private static final class SightingMapper implements RowMapper<Sighting> {
+
+    public class SightingMapper implements RowMapper<Sighting> {
 
         @Override
         public Sighting mapRow(ResultSet rs, int index) throws SQLException {
             Sighting sighting = new Sighting();
             sighting.setId(rs.getInt("Id"));
-            // sighting.getDateTime(rs.getTime("DateTime")); ???????????????????????
-            // sighting.setSightLocation(rs.getString("locId")); ???????????????????
+
+            Timestamp sightStamp = rs.getTimestamp("DateTime");
+            sightStamp.setNanos(0);
+            sighting.setDateTime(sightStamp.toLocalDateTime());
+            
+            int locId = rs.getInt("LocId");
+            sighting.setSightLocation(getALocation(locId));
 
             return sighting;
         }
     }
+
     /*
  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -320,7 +397,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         heySql.update(DELETE_POWER, id);
     }
 
-    private static final class PowerMapper implements RowMapper<SuperPower> {
+    public class PowerMapper implements RowMapper<SuperPower> {
 
         @Override
         public SuperPower mapRow(ResultSet rs, int index) throws SQLException {
@@ -392,10 +469,25 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
         heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
     }
+    
+    private List<Hero> getAllHeroesForSighting(int sightId) {
+        String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
+                + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
+                + "WHERE heroesandsightings.SightingId = ?";
+        return heySql.query(SQL_HEROES_FOR_SIGHTING, new HeroMapper(), sightId);
+    }
 
     /////////////////////////// POWER HELPERS ///////////////////////////
     public void removeAllHeroesFromPower(int powerId) {
         String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
         heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
+    }
+    
+    /////////////////////////// ORG HELPERS ///////////////////////////
+    private List<Hero> getAllHeroesForOrg(int orgId) {
+        String SQL_HEROES_FOR_ORG = "SELECT * FROM heroes "
+                + "JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id "
+                + "WHERE heroesandorganizations.OrgId = ?";
+        return heySql.query(SQL_HEROES_FOR_ORG, new HeroMapper(), orgId);
     }
 }

@@ -56,7 +56,7 @@ public interface SuperDao {
      */
     public Location addLocation(Location location);
 
-    public Hero getALocation(int id);
+    public Location getALocation(int id);
 
     public List<Location> getAllLocations();
 

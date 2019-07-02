@@ -6,6 +6,7 @@
 package com.tsg.superherosighting.dao;
 
 import com.tsg.superherosighting.dto.Hero;
+import com.tsg.superherosighting.dto.Sighting;
 import com.tsg.superherosighting.dto.SuperPower;
 import java.util.List;
 import org.junit.Assert;
@@ -147,18 +148,27 @@ public class SuperDaoHerosTest extends TestDBSetUpMethods {
         testDao.removeHero(testHero.getId());
         allHeroes = testDao.getAllHeroes();
         
+        // check hero was removed correctly
         Assert.assertFalse("List of heroes should NOT include Test Man", allHeroes.contains(testHero));
         Assert.assertTrue("List of heroes should still include batman", allHeroes.contains(testDao.getAHero(1)));
         Assert.assertTrue("List of heroes should still include joker", allHeroes.contains(testDao.getAHero(2)));
         
+        // test that sightings still exist
+        List<Sighting> allSightings = testDao.getAllSightings();
+        Assert.assertFalse("List of sightings should NOT be empty yet", allSightings.isEmpty());
+        
+        // remove all existing heroes
         testDao.removeHero(1);
         testDao.removeHero(2);
         allHeroes = testDao.getAllHeroes();
-        
+
+        // test that no more heroes exist
         Assert.assertFalse("List of heroes should still NOT include Test Man", allHeroes.contains(testHero));
         Assert.assertTrue("List of heroes should be empty", allHeroes.isEmpty());
         
-        // test that sightings are now empty because no heroes
+        // test that sightings are now empty because no heroes are associated with them
+        allSightings = testDao.getAllSightings();
+        Assert.assertTrue("List of sightings should be empty", allSightings.isEmpty());
         
     }
 }
