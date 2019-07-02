@@ -133,7 +133,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     public Location addLocation(Location location) {
         final String INSERT_LOCATION_INTO_LOCATIONS = "INSERT INTO locations (LocName, Description, Address, Latitude, Longitude) VALUES (?, ?, ?, ?, ?)";
         heySql.update(INSERT_LOCATION_INTO_LOCATIONS, location.getName(), location.getDescription(), location.getAddress(), location.getLatitude(), location.getLongitude());
-        int newId = heySql.queryForObject("SELECT_LAST_INSERT_ID()", Integer.class);
+        int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         location.setId(newId);
         return location;
     }
@@ -154,8 +154,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editLocation(Location location) {
-        // remove association with sightings/orgs then put back?
-        // HOPEFULLY NOT!
+        // edit sightings and orgs to NA location then edit back?
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -166,7 +165,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // update orgs to NA location
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public class LocMapper implements RowMapper<Location> {
 
         @Override
@@ -178,15 +177,10 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             location.setAddress(rs.getString("Address"));
             location.setLatitude(rs.getBigDecimal("Latitude"));
             location.setLongitude(rs.getBigDecimal("Longitude"));
-            
+
             return location;
         }
     }
-
-//            hero.setId(rs.getInt("Id"));
-//            hero.setName(rs.getString("HeroName"));
-//            hero.setIsHero(rs.getBoolean("IsHero"));
-//            hero.setDescription(rs.getString("Description"));
 
     /*
  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------.
@@ -236,6 +230,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     public void editOrganization(Organization organization) {
         // remove heroes then add heroes
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -243,7 +238,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public void removeOrganization(int id) {
         // remove association with heroes
-        // remove location if no sightingsn have same location
+        // remove location if no sightings have same location
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -253,11 +248,11 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         public Organization mapRow(ResultSet rs, int index) throws SQLException {
             Organization organization = new Organization();
             organization.setId(rs.getInt("Id"));
+            int locId = rs.getInt("LocId");
+            organization.setOrgLoc(getALocation(locId));
             organization.setName(rs.getString("OrgName"));
             organization.setDescription(rs.getString("Description"));
             organization.setContact(rs.getString("Contact"));
-            int locId = rs.getInt("LocId");
-            organization.setOrgLoc(getALocation(locId));
 
             return organization;
         }
@@ -294,7 +289,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         aSighting.setHeroesAtSighting(heroesAtSighting);
         // location should already be inside of
         return aSighting;
-        
+
     }
 
     @Override
@@ -335,7 +330,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             Timestamp sightStamp = rs.getTimestamp("DateTime");
             sightStamp.setNanos(0);
             sighting.setDateTime(sightStamp.toLocalDateTime());
-            
+
             int locId = rs.getInt("LocId");
             sighting.setSightLocation(getALocation(locId));
 
@@ -469,7 +464,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
         heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
     }
-    
+
     private List<Hero> getAllHeroesForSighting(int sightId) {
         String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
                 + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
@@ -482,7 +477,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
         heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
     }
-    
+
     /////////////////////////// ORG HELPERS ///////////////////////////
     private List<Hero> getAllHeroesForOrg(int orgId) {
         String SQL_HEROES_FOR_ORG = "SELECT * FROM heroes "

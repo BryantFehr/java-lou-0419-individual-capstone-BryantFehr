@@ -22,9 +22,9 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SuperDaoHerosTest extends TestDBSetUpMethods {
+public class HeroesTest extends TestDBSetUpMethods {
 
-    public SuperDaoHerosTest() {
+    public HeroesTest() {
     }
 
     @Before
@@ -37,7 +37,7 @@ public class SuperDaoHerosTest extends TestDBSetUpMethods {
     public void testMethodAddAndGetHeroWithNoPowers() {
 
         Hero testHero = new Hero();
-        testHero.setId(3);
+        // testHero.setId(3);
         testHero.setName("Test Man");
         testHero.setIsHero(true);
         testHero.setDescription("He is testy!");
@@ -49,19 +49,14 @@ public class SuperDaoHerosTest extends TestDBSetUpMethods {
         Assert.assertTrue("List of heroes should include Test Man", allHeroes.contains(testHero));
         Assert.assertEquals("Should have 3 heroes in list", 3, allHeroes.size());
 
-        Hero shouldBeTestHero = allHeroes.get(2);
+        Hero shouldBeTestHero = testDao.getAHero(testHero.getId());
         Assert.assertEquals("Should have 3 as Id", testHero.getId(), shouldBeTestHero.getId());
         Assert.assertEquals("Should have Test Man as name", testHero.getName(), shouldBeTestHero.getName());
         Assert.assertEquals("Should have true as IsHero", testHero.getIsHero(), shouldBeTestHero.getIsHero());
         Assert.assertEquals("Should have he is testy! as desc", testHero.getDescription(), shouldBeTestHero.getDescription());
-        Assert.assertTrue("List of powers should be empty", testHero.getHeroPowers().isEmpty());
+        Assert.assertTrue("List of powers should be empty", shouldBeTestHero.getHeroPowers().isEmpty());
     }
 
-//    private int Id;
-//    private String name;
-//    private Boolean isHero;
-//    private String Description;
-//    private List<SuperPower> heroPowers;
     @Test
     public void testMethodAddAndGetHeroWithOnePower() {
 

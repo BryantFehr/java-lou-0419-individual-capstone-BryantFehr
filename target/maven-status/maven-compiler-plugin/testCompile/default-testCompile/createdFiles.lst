@@ -1,3 +1,6 @@
-com\tsg\superherosighting\dao\SuperDaoHerosTest.class
+com\tsg\superherosighting\dao\SightingsTest.class
+com\tsg\superherosighting\dao\PowersTest.class
+com\tsg\superherosighting\dao\LocationsTest.class
 com\tsg\superherosighting\dao\TestDBSetUpMethods.class
-com\tsg\superherosighting\dao\SuperDaoPowersTest.class
+com\tsg\superherosighting\dao\HeroesTest.class
+com\tsg\superherosighting\dao\OrgsTest.class

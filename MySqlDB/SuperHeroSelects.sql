@@ -15,12 +15,25 @@ SELECT * FROM SuperPowers WHERE id = 1;
 
 SELECT * FROM locations WHERE id = 1;
 
+SELECT * FROM organizations WHERE id = 1;
+
+SELECT * FROM sightings WHERE id = 1;
+
+-- GETTING POWERS FOR HERO --
 SELECT * FROM SuperPowers
 JOIN heroesandsuperpowers ON heroesandsuperpowers.SuperPowerId = superpowers.Id
 WHERE heroesandsuperpowers.HeroId = 1;
 
 
+-- GETTING HEROES FOR ORG --
+SELECT * FROM heroes
+JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id
+WHERE heroesandorganizations.OrgId = 1;
 
+-- GETTING HEROES FOR SIGHTING --
+SELECT * FROM heroes
+JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id
+WHERE heroesandsightings.SightingId = 1;
 
 
 -- UPDATES AND DELETES FOR DAO IMPL
