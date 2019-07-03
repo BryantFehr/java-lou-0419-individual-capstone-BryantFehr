@@ -42,6 +42,11 @@ UPDATE heroes
 SET HeroName = 'Batman', IsHero = '1', Description = 'battty'
 WHERE Id = 1;
 
+-- UPDATE AN ORG --
+UPDATE organizations
+SET OrgName = 'JL', `Description` = 'ju', Contact = 0000000
+WHERE Id = 1;
+
 -- DELETE A HERO
 DELETE FROM heroesandsuperpowers WHERE HeroId = 2;
 DELETE FROM heroesandorganizations WHERE HeroId = 2;
@@ -52,7 +57,8 @@ DELETE FROM heroes WHERE Id = 2;
 DELETE FROM heroesandsightings WHERE SightingId = 1;
 DELETE FROM sightings WHERE Id = 1;
 
-
+-- DELETE ORG --
+DELETE FROM heroesandorganizations WHERE OrgId = 1;
 
 
 

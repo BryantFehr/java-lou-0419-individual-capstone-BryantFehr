@@ -70,7 +70,7 @@ public class HeroesTest extends TestDBSetUpMethods {
         SuperPower superPower = testDao.getASuperpower(1);
         testHero.getHeroPowers().add(superPower);
         
-        testDao.addPowerToHero(testHero.getId(), 1);
+        testDao.addPowerToHero(testHero.getId(), superPower.getId());
         
         List <SuperPower> testHeroPowers = testDao.getAllPowersForHero(testHero.getId());
         

@@ -95,6 +95,27 @@ public class OrgsTest extends TestDBSetUpMethods {
         Hero aHero = testDao.getAHero(1);
         testOrg.getHeroesInOrg().add(aHero);
         
+        testDao.addHeroToOrg(aHero.getId(), testOrg.getId());
+        
+        List<Hero> testOrgHeroes = testDao.getAllHeroesForOrg(testOrg.getId());
+        Assert.assertEquals("List of heroes should have 1 hero", 1, testOrgHeroes.size());
+        Assert.assertTrue("List of heroes should containt aHero", testOrgHeroes.contains(aHero));
+        
+        List<Organization> allOrgs = testDao.getAllOrganizations();
+        
+        Assert.assertNotNull("List of orgs should never be null", allOrgs);
+        Assert.assertTrue("List of orgs should include testOrg", allOrgs.contains(testOrg));
+        Assert.assertEquals("Should have 3 orgs in list", 3, allOrgs.size());
+        
+        Organization shouldBeTestOrg = testDao.getAnOrganization(testOrg.getId());
+        Assert.assertEquals("Should have same Id as testOrg", testOrg.getId(), shouldBeTestOrg.getId());
+        Assert.assertEquals("Should have same name as testOrg", testOrg.getName(), shouldBeTestOrg.getName());
+        Assert.assertEquals("Should have same desc as testOrg", testOrg.getDescription(), shouldBeTestOrg.getDescription());
+        Assert.assertEquals("Should have same contact as testOrg", testOrg.getContact(), shouldBeTestOrg.getContact());
+        Assert.assertEquals("Should have same loc as testOrg", testOrg.getOrgLoc(), shouldBeTestOrg.getOrgLoc());
+        
+        
+        
     }
     
 }

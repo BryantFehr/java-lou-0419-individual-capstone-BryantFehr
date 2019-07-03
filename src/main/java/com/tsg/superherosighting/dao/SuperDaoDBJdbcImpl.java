@@ -229,10 +229,19 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editOrganization(Organization organization) {
-        // remove heroes then add heroes
+        final String SQL_UPDATE_ORG = "UPDATE organizations "
+                + "SET OrgName = ?, Description = ?, Contact = ? "
+                + "WHERE Id = ?";
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        heySql.update(SQL_UPDATE_ORG, 
+                organization.getName(), organization.getDescription(), organization.getContact(),
+                organization.getId());
+        editLocation(organization.getOrgLoc()); // may cause issues?!?!?!
+        
+        this.removeAllHeroesFromOrg(organization.getId());
+        this.addHeroesToOrg(organization.getHeroesInOrg(), organization.getId());
+        // remove heroes then add heroes
+        }
 
     @Override
     @Transactional
@@ -465,7 +474,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
     }
 
-    private List<Hero> getAllHeroesForSighting(int sightId) {
+    public List<Hero> getAllHeroesForSighting(int sightId) {
         String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
                 + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
                 + "WHERE heroesandsightings.SightingId = ?";
@@ -479,10 +488,27 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     }
 
     /////////////////////////// ORG HELPERS ///////////////////////////
-    private List<Hero> getAllHeroesForOrg(int orgId) {
+    public List<Hero> getAllHeroesForOrg(int orgId) {
         String SQL_HEROES_FOR_ORG = "SELECT * FROM heroes "
                 + "JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id "
                 + "WHERE heroesandorganizations.OrgId = ?";
+        // getAllPowersForHero();
         return heySql.query(SQL_HEROES_FOR_ORG, new HeroMapper(), orgId);
+    }
+    
+    public void removeAllHeroesFromOrg(int orgId) {
+        String REMOVE_HEROES_FROM_ORG = "DELETE FROM heroesandorganizations WHERE OrgId = ?";
+        heySql.update(REMOVE_HEROES_FROM_ORG, orgId);
+    }
+    
+    public void addHeroToOrg(int heroId, int orgId) {
+        String SQL_ORG_HERO = "INSERT INTO heroesandorganizations (HeroId, OrgId) VALUES (?, ?)";
+        heySql.update(SQL_ORG_HERO, heroId, orgId);
+    }
+
+    public void addHeroesToOrg(List<Hero> heroesInOrg, int orgId) {
+        for (Hero aHero : heroesInOrg) {
+            this.addHeroToOrg(aHero.getId(), orgId);
+        }
     }
 }
