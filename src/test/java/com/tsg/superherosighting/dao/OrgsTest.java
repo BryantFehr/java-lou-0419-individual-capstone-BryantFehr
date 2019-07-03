@@ -55,8 +55,6 @@ public class OrgsTest extends TestDBSetUpMethods {
         testDao.addOrganization(testOrg);
         List<Organization> allOrgs = testDao.getAllOrganizations();
         
-        
-        
         Assert.assertNotNull("List of orgs should never be null", allOrgs);
         Assert.assertTrue("List of orgs should include testOrg", allOrgs.contains(testOrg));
         Assert.assertEquals("Should have 3 orgs in list", 3, allOrgs.size());
@@ -99,7 +97,7 @@ public class OrgsTest extends TestDBSetUpMethods {
         
         List<Hero> testOrgHeroes = testDao.getAllHeroesForOrg(testOrg.getId());
         Assert.assertEquals("List of heroes should have 1 hero", 1, testOrgHeroes.size());
-        Assert.assertTrue("List of heroes should containt aHero", testOrgHeroes.contains(aHero));
+        Assert.assertTrue("List of heroes should contain aHero", testOrgHeroes.contains(aHero));
         
         List<Organization> allOrgs = testDao.getAllOrganizations();
         
@@ -113,18 +111,76 @@ public class OrgsTest extends TestDBSetUpMethods {
         Assert.assertEquals("Should have same desc as testOrg", testOrg.getDescription(), shouldBeTestOrg.getDescription());
         Assert.assertEquals("Should have same contact as testOrg", testOrg.getContact(), shouldBeTestOrg.getContact());
         Assert.assertEquals("Should have same loc as testOrg", testOrg.getOrgLoc(), shouldBeTestOrg.getOrgLoc());
-        
-        
-        
     }
     
+    @Test
+    public void testMethodGetAllOrgs() {
+        List<Organization> allOrgs = testDao.getAllOrganizations();
+        Assert.assertNotNull("List of orgs should not be null", allOrgs);
+        Assert.assertEquals("Should have 2 orgs in list", 2, allOrgs.size());
+    }
+    
+    @Test
+    public void testMethodEditOrg() {
+        Organization orgToEdit = testDao.getAnOrganization(1);
+        
+        orgToEdit.setName("Test Org");
+        orgToEdit.setDescription("Testy");
+        orgToEdit.setContact("0000000");
+        
+        List <Hero> allHeroes = testDao.getAllHeroes();
+        orgToEdit.setHeroesInOrg(allHeroes);
+        orgToEdit.setOrgLoc(testDao.getALocation(2));
+        testDao.editOrganization(orgToEdit);
+        
+        Organization shouldBeTestOrg = testDao.getAnOrganization(orgToEdit.getId());
+        
+        Assert.assertEquals("shouldBeTestOrg should now be Test Org", orgToEdit.getName(), shouldBeTestOrg.getName());
+        Assert.assertEquals("shouldBeTestOrg should now have desc of Testy", orgToEdit.getDescription(), shouldBeTestOrg.getDescription());
+        Assert.assertEquals("shouldBeTestOrg should now have contact of 0000000", orgToEdit.getContact(), shouldBeTestOrg.getContact());
+        Assert.assertEquals("shouldBeTestOrg should now have 2 heroes", orgToEdit.getHeroesInOrg().size(), shouldBeTestOrg.getHeroesInOrg().size());
+        Assert.assertEquals("shouldBeTestOrg should now be at Asylum", testDao.getALocation(2), shouldBeTestOrg.getOrgLoc());
+    }
+    
+    @Test
+    public void testMethodRemoveHero() {
+        Organization testOrg = new Organization();
+        testOrg.setName("testOrg");
+        testOrg.setDescription("testy");
+        testOrg.setContact("8675309");
+        
+        Location testLoc = new Location();
+        testLoc.setName("testLoc");
+        testLoc.setDescription("testy");
+        testLoc.setAddress("Nowhere lane");
+        
+        BigDecimal latLong = new BigDecimal("10.00000001");
+        testLoc.setLatitude(latLong);
+        testLoc.setLongitude(latLong);
+        testDao.addLocation(testLoc);
+        
+        testOrg.setOrgLoc(testLoc);
+        testDao.addOrganization(testOrg);
+        List<Organization> allOrgs = testDao.getAllOrganizations();
+        Assert.assertEquals("Should have 3 orgs in list", 3, allOrgs.size());
+        Assert.assertTrue("List of orgs should include testOrg", allOrgs.contains(testOrg));
+        
+        
+        testDao.removeOrganization(testOrg.getId());
+        allOrgs = testDao.getAllOrganizations();
+        
+        // test that org was removed correclty
+        Assert.assertFalse("List of orgs should NOT include testOrg", allOrgs.contains(testOrg));
+        Assert.assertTrue("List of orgs should still include Justice League", allOrgs.contains(testDao.getAnOrganization(1)));
+        Assert.assertTrue("List of orgs should still include  Baddy Inc", allOrgs.contains(testDao.getAnOrganization(2)));
+        
+        // remove all existing orgs
+        testDao.removeOrganization(1);
+        testDao.removeOrganization(2);
+        allOrgs = testDao.getAllOrganizations();
+        
+        // test that no more orgs exist
+        Assert.assertFalse("List of orgs should still NOT include testOrg", allOrgs.contains(testOrg));
+        Assert.assertTrue("List of orgs should now be empty", allOrgs.isEmpty());
+    }
 }
-
-
-//////////////////// LOC
-//    private int id;
-//    private String name;
-//    private String description;
-//    private String contact;
-//    private List<Hero> heroesInOrg = new ArrayList();
-//    private Location orgLoc;

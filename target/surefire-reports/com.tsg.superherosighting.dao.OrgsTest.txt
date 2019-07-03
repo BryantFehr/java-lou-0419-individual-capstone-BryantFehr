@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.tsg.superherosighting.dao.OrgsTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.63 s <<< FAILURE! - in com.tsg.superherosighting.dao.OrgsTest
-testMethodAddAndGetOrgWithOneHero(com.tsg.superherosighting.dao.OrgsTest)  Time elapsed: 0.609 s  <<< FAILURE!
-java.lang.AssertionError: List of heroes should containt aHero
-	at com.tsg.superherosighting.dao.OrgsTest.testMethodAddAndGetOrgWithOneHero(OrgsTest.java:116)
-
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.392 s - in com.tsg.superherosighting.dao.OrgsTest

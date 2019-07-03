@@ -28,6 +28,7 @@ WHERE heroesandsuperpowers.HeroId = 1;
 -- GETTING HEROES FOR ORG --
 SELECT * FROM heroes
 JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id
+JOIN heroesandsuperpowers ON heroesandsuperpowers.HeroId = heroes.Id
 WHERE heroesandorganizations.OrgId = 1;
 
 -- GETTING HEROES FOR SIGHTING --
@@ -44,7 +45,12 @@ WHERE Id = 1;
 
 -- UPDATE AN ORG --
 UPDATE organizations
-SET OrgName = 'JL', `Description` = 'ju', Contact = 0000000
+SET LocId = '2', OrgName = 'JL', `Description` = 'ju', Contact = '0000000'
+WHERE Id = 1;
+
+-- UPDATE A SIGHTING --
+UPDATE sightings
+SET LocId = '2', `DateTime` = '2030-01-16 23:12:01'
 WHERE Id = 1;
 
 -- DELETE A HERO

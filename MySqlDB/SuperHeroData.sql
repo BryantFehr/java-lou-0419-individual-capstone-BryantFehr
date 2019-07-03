@@ -34,6 +34,6 @@ INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('1', '4', '2019-01-1
 INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('2', '2', '2019-01-17 23:12:01');
 
 -- HEROES & SIGHTINGS --
-INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1', '1');
-INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1');
-INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2');
+INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1', '1');
+INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1');
+INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2');

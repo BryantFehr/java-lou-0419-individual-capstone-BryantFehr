@@ -6,6 +6,7 @@
 package com.tsg.superherosighting.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Sighting {
 
     private int id;
     private LocalDateTime dateTime;
-    private List<Hero> heroesAtSighting;
+    private List<Hero> heroesAtSighting = new ArrayList();
     private Location sightLocation;
 
 }

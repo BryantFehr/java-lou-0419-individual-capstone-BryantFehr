@@ -81,3 +81,4 @@ ALTER TABLE HeroesAndSuperPowers ADD CONSTRAINT fk_HeroesAndSuperPowersToSuperPo
 FOREIGN KEY (SuperPowerId) REFERENCES SuperPowers(Id);
 
 INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-2', 'Temp Loc', 'NA', 'NA', '00.00000000', '00.00000000');

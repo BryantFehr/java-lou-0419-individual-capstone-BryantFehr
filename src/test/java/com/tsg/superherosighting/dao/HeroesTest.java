@@ -66,14 +66,14 @@ public class HeroesTest extends TestDBSetUpMethods {
         testHero.setIsHero(true);
         testHero.setDescription("He is testy!");
         testDao.addHero(testHero);
-        
+
         SuperPower superPower = testDao.getASuperpower(1);
         testHero.getHeroPowers().add(superPower);
-        
+
         testDao.addPowerToHero(testHero.getId(), superPower.getId());
-        
-        List <SuperPower> testHeroPowers = testDao.getAllPowersForHero(testHero.getId());
-        
+
+        List<SuperPower> testHeroPowers = testDao.getAllPowersForHero(testHero.getId());
+
         List<Hero> allHeroes = testDao.getAllHeroes();
 
         Assert.assertNotNull("List of heroes should never be null", allHeroes);
@@ -85,9 +85,9 @@ public class HeroesTest extends TestDBSetUpMethods {
         Assert.assertEquals("Should have Test Man as name", testHero.getName(), shouldBeTestHero.getName());
         Assert.assertEquals("Should have true as IsHero", testHero.getIsHero(), shouldBeTestHero.getIsHero());
         Assert.assertEquals("Should have he is testy! as desc", testHero.getDescription(), shouldBeTestHero.getDescription());
-        
+
         Assert.assertEquals("List of powers should have 1 power", 1, testHeroPowers.size());
-        
+
     }
 
     @Test
@@ -98,7 +98,7 @@ public class HeroesTest extends TestDBSetUpMethods {
         testHero.setIsHero(true);
         testHero.setDescription("He is testy!");
         testDao.addHero(testHero);
-        
+
         Hero retrievedHero = testDao.getAHero(testHero.getId());
         Assert.assertEquals("Gotten hero should be Test Man", testHero, retrievedHero);
     }
@@ -114,18 +114,22 @@ public class HeroesTest extends TestDBSetUpMethods {
     public void testMethodEditHero() {
         Hero heroToEdit = testDao.getAHero(1);
         Assert.assertEquals("heroToEdit should be Batman", "Batman", heroToEdit.getName());
-        
+
         heroToEdit.setName("Test Man");
         heroToEdit.setIsHero(false);
         heroToEdit.setDescription("testy");
-        List <SuperPower> allPowers = testDao.getAllSuperpowers();
+        List<SuperPower> allPowers = testDao.getAllSuperpowers();
         heroToEdit.setHeroPowers(allPowers);
         testDao.editHero(heroToEdit);
-        
-        Assert.assertEquals("heroToEdit should now be Test Man", "Test Man", heroToEdit.getName());
-        Assert.assertFalse("heroToEdit is now evil", heroToEdit.getIsHero());
-        Assert.assertEquals("heroToEdit desc is not testy", "testy", heroToEdit.getDescription());
-        Assert.assertEquals("heroToEdit's now has all 3 powers", 3, heroToEdit.getHeroPowers().size());
+
+        Hero shouldBeTestHero = testDao.getAHero(heroToEdit.getId());
+
+        Assert.assertEquals("ShouldBeTestHero should equal heroToEdit", shouldBeTestHero, heroToEdit);
+        Assert.assertEquals("shouldBeTestHero should now be Test Man", "Test Man", shouldBeTestHero.getName());
+        Assert.assertFalse("shouldBeTestHero is now evil", shouldBeTestHero.getIsHero());
+        Assert.assertEquals("shouldBeTestHero desc is not testy", "testy", shouldBeTestHero.getDescription());
+        Assert.assertEquals("shouldBeTestHero's now has all 3 powers", 3, shouldBeTestHero.getHeroPowers().size());
+
     }
 
     @Test
@@ -135,23 +139,23 @@ public class HeroesTest extends TestDBSetUpMethods {
         testHero.setIsHero(true);
         testHero.setDescription("He is testy!");
         testDao.addHero(testHero);
-        
+
         List<Hero> allHeroes = testDao.getAllHeroes();
         Assert.assertEquals("Should have 3 heroes in list", 3, allHeroes.size());
-        Assert.assertTrue("List of powers should include Test Man", allHeroes.contains(testHero));
-        
+        Assert.assertTrue("List of heroes should include Test Man", allHeroes.contains(testHero));
+
         testDao.removeHero(testHero.getId());
         allHeroes = testDao.getAllHeroes();
-        
+
         // check hero was removed correctly
         Assert.assertFalse("List of heroes should NOT include Test Man", allHeroes.contains(testHero));
         Assert.assertTrue("List of heroes should still include batman", allHeroes.contains(testDao.getAHero(1)));
         Assert.assertTrue("List of heroes should still include joker", allHeroes.contains(testDao.getAHero(2)));
-        
+
         // test that sightings still exist
         List<Sighting> allSightings = testDao.getAllSightings();
         Assert.assertFalse("List of sightings should NOT be empty yet", allSightings.isEmpty());
-        
+
         // remove all existing heroes
         testDao.removeHero(1);
         testDao.removeHero(2);
@@ -160,10 +164,10 @@ public class HeroesTest extends TestDBSetUpMethods {
         // test that no more heroes exist
         Assert.assertFalse("List of heroes should still NOT include Test Man", allHeroes.contains(testHero));
         Assert.assertTrue("List of heroes should be empty", allHeroes.isEmpty());
-        
+
         // test that sightings are now empty because no heroes are associated with them
         allSightings = testDao.getAllSightings();
         Assert.assertTrue("List of sightings should be empty", allSightings.isEmpty());
-        
+
     }
 }
