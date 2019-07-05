@@ -69,7 +69,7 @@ public class TestDBSetUpMethods {
         heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1', '1')");
         heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1')");
         heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2')");
-    
+
         heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000')");
     }
 

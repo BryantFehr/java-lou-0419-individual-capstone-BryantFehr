@@ -14,8 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class SuperApp {
-    
-    
+
     public static void main(String[] args) {
         SpringApplication.run(SuperApp.class, args);
     }

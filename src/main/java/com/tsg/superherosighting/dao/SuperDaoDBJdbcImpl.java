@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 public class SuperDaoDBJdbcImpl implements SuperDao {
-    
+
     @Autowired
     @Getter
     JdbcTemplate heySql;
@@ -55,7 +55,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         hero.setId(newId);
         return hero;
     }
-    
+
     @Override
     public Hero getAHero(int id) {
         final String GET_A_SINGLE_HERO = "SELECT * FROM heroes WHERE id = ?";
@@ -64,7 +64,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         aHero.setHeroPowers(powersForHero);
         return aHero;
     }
-    
+
     @Override
     public List<Hero> getAllHeroes() {
         final String GET_ALL_HEROES = "SELECT * FROM heroes";
@@ -73,24 +73,24 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             List<SuperPower> powersForHero = this.getAllPowersForHero(aHero.getId());
             aHero.setHeroPowers(powersForHero);
         }
-        
+
         return heroes;
     }
-    
+
     @Override
     public void editHero(Hero hero) {
         final String SQL_UPDATE_A_HERO = "UPDATE heroes "
                 + "SET HeroName = ?, IsHero = ?, Description = ? "
                 + "WHERE Id = ?";
-        
+
         heySql.update(SQL_UPDATE_A_HERO,
                 hero.getName(), hero.getIsHero(), hero.getDescription(),
                 hero.getId());
-        
+
         this.removeAllPowersFromHero(hero.getId());
         this.addPowersToHero(hero.getHeroPowers(), hero.getId());
     }
-    
+
     @Override
     @Transactional
     public void removeHero(int id) {
@@ -101,9 +101,9 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         final String SQL_DELETE_HERO = "DELETE FROM heroes WHERE id = ?";
         heySql.update(SQL_DELETE_HERO, id);
     }
-    
+
     public class HeroMapper implements RowMapper<Hero> {
-        
+
         @Override
         public Hero mapRow(ResultSet rs, int index) throws SQLException {
             Hero hero = new Hero();
@@ -111,7 +111,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             hero.setName(rs.getString("HeroName"));
             hero.setIsHero(rs.getBoolean("IsHero"));
             hero.setDescription(rs.getString("Description"));
-            
+
             return hero;
         }
     }
@@ -138,31 +138,31 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         location.setId(newId);
         return location;
     }
-    
+
     @Override
     public Location getALocation(int id) {
         final String GET_A_SINGLE_LOCATION = "SELECT * FROM locations WHERE id = ?";
         Location aLoc = heySql.queryForObject(GET_A_SINGLE_LOCATION, new LocMapper(), id);
         return aLoc;
     }
-    
+
     @Override
     public List<Location> getAllLocations() {
         final String GET_ALL_LOCATIONS = "SELECT * FROM locations";
         List<Location> locations = heySql.query(GET_ALL_LOCATIONS, new LocMapper());
         return locations;
     }
-    
+
     @Override
     public void editLocation(Location location) {
         String EDIT_A_LOC = "UPDATE locations "
                 + "SET LocName = ?, Description = ?, Address = ?, Latitude = ?, Longitude = ? "
                 + "WHERE Id = ?";
-        heySql.update(EDIT_A_LOC, location.getName(), location.getDescription(), location.getAddress(), 
+        heySql.update(EDIT_A_LOC, location.getName(), location.getDescription(), location.getAddress(),
                 location.getLatitude(), location.getLongitude(),
                 location.getId());
     }
-    
+
     @Override
     @Transactional
     public void removeLocation(int id) {
@@ -175,14 +175,14 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
                 .collect(Collectors.toList());
         this.removeSightingsFromBridge(sightsToRemove);
         this.deleteSightings(sightsToRemove);
-        
+
         String DELETE_LOC = "DELETE FROM locations WHERE Id = ?";
         heySql.update(DELETE_LOC, id);
-        
+
     }
-    
+
     public class LocMapper implements RowMapper<Location> {
-        
+
         @Override
         public Location mapRow(ResultSet rs, int index) throws SQLException {
             Location location = new Location();
@@ -192,7 +192,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             location.setAddress(rs.getString("Address"));
             location.setLatitude(rs.getBigDecimal("Latitude"));
             location.setLongitude(rs.getBigDecimal("Longitude"));
-            
+
             return location;
         }
     }
@@ -219,7 +219,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         organization.setId(newId);
         return organization;
     }
-    
+
     @Override
     public Organization getAnOrganization(int id) {
         final String GET_A_SINGLE_ORG = "SELECT * FROM organizations WHERE id = ?";
@@ -229,7 +229,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // location should already be inside of
         return organization;
     }
-    
+
     @Override
     public List<Organization> getAllOrganizations() {
         final String GET_ALL_ORGS = "SELECT * FROM organizations";
@@ -241,22 +241,22 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // location should already be inside of
         return orgs;
     }
-    
+
     @Override
     public void editOrganization(Organization organization) {
         final String SQL_UPDATE_ORG = "UPDATE organizations "
                 + "SET LocId = ?, OrgName = ?, Description = ?, Contact = ? "
                 + "WHERE Id = ?";
-        
+
         heySql.update(SQL_UPDATE_ORG,
                 organization.getOrgLoc().getId(), organization.getName(), organization.getDescription(), organization.getContact(),
                 organization.getId());
-        
+
         this.removeAllHeroesFromOrg(organization.getId());
         this.addHeroesToOrg(organization.getHeroesInOrg(), organization.getId());
         // remove heroes then add heroes
     }
-    
+
     @Override
     @Transactional
     public void removeOrganization(int id) {
@@ -265,9 +265,9 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         final String SQL_DELETE_ORG = "DELETE FROM organizations WHERE id = ?";
         heySql.update(SQL_DELETE_ORG, id);
     }
-    
+
     public class OrgMapper implements RowMapper<Organization> {
-        
+
         @Override
         public Organization mapRow(ResultSet rs, int index) throws SQLException {
             Organization organization = new Organization();
@@ -277,7 +277,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             organization.setName(rs.getString("OrgName"));
             organization.setDescription(rs.getString("Description"));
             organization.setContact(rs.getString("Contact"));
-            
+
             return organization;
         }
     }
@@ -304,7 +304,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         sighting.setId(newId);
         return sighting;
     }
-    
+
     @Override
     public Sighting getASighting(int id) {
         final String GET_A_SINGLE_SIGHTING = "SELECT * FROM sightings WHERE id = ?";
@@ -313,9 +313,9 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         aSighting.setHeroesAtSighting(heroesAtSighting);
         // location should already be inside of
         return aSighting;
-        
+
     }
-    
+
     @Override
     public List<Sighting> getAllSightings() {
         final String GET_ALL_SIGHTINGS = "SELECT * FROM sightings";
@@ -327,20 +327,20 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // location should already be inside of
         return sightings;
     }
-    
+
     @Override
     public void editSighting(Sighting sighting) {
         final String SQL_UPDATE_SIGHTING = "UPDATE sightings "
                 + "SET LocId = ?, DateTime = ? "
                 + "WHERE Id = ?";
-        
+
         heySql.update(SQL_UPDATE_SIGHTING,
                 sighting.getSightLocation().getId(), sighting.getDateTime(), sighting.getId());
-        
+
         this.removeAllHeroesFromSightings(sighting.getId());
         this.addHeroesToSighting(sighting.getHeroesAtSighting(), sighting.getId());
     }
-    
+
     @Override
     @Transactional
     public void removeSighting(int id) {
@@ -348,21 +348,21 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         final String SQL_DELETE_SIGHTING = "DELETE FROM sightings WHERE Id = ?";
         heySql.update(SQL_DELETE_SIGHTING, id);
     }
-    
+
     public class SightingMapper implements RowMapper<Sighting> {
-        
+
         @Override
         public Sighting mapRow(ResultSet rs, int index) throws SQLException {
             Sighting sighting = new Sighting();
             sighting.setId(rs.getInt("Id"));
-            
+
             Timestamp sightStamp = rs.getTimestamp("DateTime");
             sightStamp.setNanos(0);
             sighting.setDateTime(sightStamp.toLocalDateTime());
-            
+
             int locId = rs.getInt("LocId");
             sighting.setSightLocation(getALocation(locId));
-            
+
             return sighting;
         }
     }
@@ -389,30 +389,30 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         superpower.setId(newId);
         return superpower;
     }
-    
+
     @Override
     public SuperPower getASuperpower(int id) {
         final String GET_A_SINGLE_POWER = "SELECT * FROM SuperPowers WHERE id = ?";
         SuperPower aSuperPower = heySql.queryForObject(GET_A_SINGLE_POWER, new PowerMapper(), id);
         return aSuperPower;
     }
-    
+
     @Override
     public List<SuperPower> getAllSuperpowers() {
         final String GET_ALL_POWERS = "SELECT * FROM SuperPowers";
         List<SuperPower> powers = heySql.query(GET_ALL_POWERS, new PowerMapper());
         return powers;
     }
-    
+
     @Override
     public void editSuperpower(SuperPower superpower) {
         final String UPDATE_A_POWER = "UPDATE superpowers "
                 + "SET PowerName = ? "
                 + "WHERE Id = ?";
-        
+
         heySql.update(UPDATE_A_POWER, superpower.getName(), superpower.getId());
     }
-    
+
     @Override
     @Transactional
     public void removeSuperpower(int id) {
@@ -420,9 +420,9 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         final String DELETE_POWER = "DELETE FROM superpowers WHERE Id = ?";
         heySql.update(DELETE_POWER, id);
     }
-    
+
     public class PowerMapper implements RowMapper<SuperPower> {
-        
+
         @Override
         public SuperPower mapRow(ResultSet rs, int index) throws SQLException {
             SuperPower power = new SuperPower();
@@ -452,33 +452,33 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
                 + "WHERE heroesandsuperpowers.HeroId = ?";
         return heySql.query(SQL_POWERS_FOR_HERO, new PowerMapper(), heroId);
     }
-    
+
     public void removeAllPowersFromHero(int heroId) {
         String SQL_REMOVE_POWERS_FROM_HERO = "DELETE FROM heroesandsuperpowers WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_POWERS_FROM_HERO, heroId);
     }
-    
+
     public void addPowerToHero(int heroId, int superPowerId) {
         String SQL_HERO_POWER = "INSERT INTO heroesandsuperpowers (HeroId, SuperPowerId) VALUES (?, ?)";
         heySql.update(SQL_HERO_POWER, heroId, superPowerId);
     }
-    
+
     public void addPowersToHero(List<SuperPower> heroPowers, int heroId) {
         for (SuperPower aPower : heroPowers) {
             this.addPowerToHero(heroId, aPower.getId());
         }
     }
-    
+
     public void removeAllOrgsFromHero(int heroId) {
         String SQL_REMOVE_ORGS_FROM_HERO = "DELETE FROM heroesandorganizations WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_ORGS_FROM_HERO, heroId);
     }
-    
+
     public void removeAllSightingsFromHero(int heroId) {
         String SQL_REMOVE_SIGHTINGS_FROM_HERO = "DELETE FROM heroesandsightings WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_SIGHTINGS_FROM_HERO, heroId);
     }
-    
+
     public void removeSightingsWithNoHeroes() {
         List<Sighting> allSightings = getAllSightings();
         for (Sighting aSighting : allSightings) {
@@ -494,30 +494,37 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         heySql.update(SQL_UPDATE_ORG_BY_LOCID, locId);
     }
 
+    private void deleteSightings(List<Sighting> sightsToRemove) {
+        String DELETE_SIGHTING_WITH_LOC = "DELETE FROM sightings WHERE Id = ?";
+        for (Sighting aSighting : sightsToRemove) {
+            heySql.update(DELETE_SIGHTING_WITH_LOC, aSighting.getId());
+        }
+    }
+
     /////////////////////////// ORG HELPERS ///////////////////////////
     public List<Hero> getAllHeroesForOrg(int orgId) {
         String SQL_HEROES_FOR_ORG = "SELECT * FROM heroes "
                 + "JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id "
                 + "WHERE heroesandorganizations.OrgId = ?";
         List<Hero> orgHeroes = heySql.query(SQL_HEROES_FOR_ORG, new HeroMapper(), orgId);
-        
+
         for (Hero aHero : orgHeroes) {
             List<SuperPower> heroesPowers = this.getAllPowersForHero(aHero.getId());
             aHero.setHeroPowers(heroesPowers);
         }
         return orgHeroes;
     }
-    
+
     public void removeAllHeroesFromOrg(int orgId) {
         String REMOVE_HEROES_FROM_ORG = "DELETE FROM heroesandorganizations WHERE OrgId = ?";
         heySql.update(REMOVE_HEROES_FROM_ORG, orgId);
     }
-    
+
     public void addHeroToOrg(int heroId, int orgId) {
         String SQL_ORG_HERO = "INSERT INTO heroesandorganizations (HeroId, OrgId) VALUES (?, ?)";
         heySql.update(SQL_ORG_HERO, heroId, orgId);
     }
-    
+
     public void addHeroesToOrg(List<Hero> heroesInOrg, int orgId) {
         for (Hero aHero : heroesInOrg) {
             this.addHeroToOrg(aHero.getId(), orgId);
@@ -529,7 +536,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
         heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
     }
-    
+
     public List<Hero> getAllHeroesForSighting(int sightId) {
         String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
                 + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
@@ -539,15 +546,15 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
             List<SuperPower> heroesPowers = this.getAllPowersForHero(aHero.getId());
             aHero.setHeroPowers(heroesPowers);
         }
-        
+
         return sightHeroes;
     }
-    
+
     public void addHeroToSighting(int heroId, int sightingId) {
         String SQL_SIGHTING_HERO = "INSERT INTO heroesandsightings (HeroId, SightingId) VALUES (?, ?)";
         heySql.update(SQL_SIGHTING_HERO, heroId, sightingId);
     }
-    
+
     public void addHeroesToSighting(List<Hero> heroesInSighting, int sightingId) {
         for (Hero aHero : heroesInSighting) {
             this.addHeroToSighting(aHero.getId(), sightingId);
@@ -559,19 +566,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
         heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
     }
-    
+
     private void removeSightingsFromBridge(List<Sighting> sightsToRemove) {
         String DELETE_SIGHTING_FROM_BRIDGE = "DELETE FROM heroesandsightings WHERE SightingId = ?";
         for (Sighting aSighting : sightsToRemove) {
             heySql.update(DELETE_SIGHTING_FROM_BRIDGE, aSighting.getId());
         }
     }
-    
-    private void deleteSightings(List<Sighting> sightsToRemove) {
-        String DELETE_SIGHTING_WITH_LOC = "DELETE FROM sightings WHERE Id = ?";
-        for (Sighting aSighting : sightsToRemove) {
-            heySql.update(DELETE_SIGHTING_WITH_LOC, aSighting.getId());
-        }
-        
-    }
+
 }
