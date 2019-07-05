@@ -53,6 +53,11 @@ UPDATE sightings
 SET LocId = '2', `DateTime` = '2030-01-16 23:12:01'
 WHERE Id = 1;
 
+-- UPDATE A LOCATION -- 
+UPDATE locations
+SET LocName = 'test', `Description` = 'test', Address = 'Testy Lane', Latitude = '40.00000004', Longitude = '40.00000004'
+WHERE Id = 1;
+
 -- DELETE A HERO
 DELETE FROM heroesandsuperpowers WHERE HeroId = 2;
 DELETE FROM heroesandorganizations WHERE HeroId = 2;
@@ -66,8 +71,15 @@ DELETE FROM sightings WHERE Id = 1;
 -- DELETE ORG --
 DELETE FROM heroesandorganizations WHERE OrgId = 1;
 
+-- DELETE LOCATION -- 
 
+SELECT * FROM organizations;
 
+UPDATE organizations SET LocId = '-1' WHERE LocId = 3;
+SELECT * FROM sightings WHERE LocId = 2;
+DELETE FROM heroesandsightings WHERE SightingId = 2;
+DELETE FROM sightings WHERE Id = 2;
+DELETE FROM locations WHERE Id = 3;
 
 -- UPDATE A POWER --
 UPDATE superpowers SET PowerName = 'test' WHERE Id = 1;

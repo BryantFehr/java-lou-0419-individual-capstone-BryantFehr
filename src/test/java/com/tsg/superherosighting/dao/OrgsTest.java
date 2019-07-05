@@ -127,19 +127,20 @@ public class OrgsTest extends TestDBSetUpMethods {
         orgToEdit.setName("Test Org");
         orgToEdit.setDescription("Testy");
         orgToEdit.setContact("0000000");
+        orgToEdit.setOrgLoc(testDao.getALocation(2));
         
         List <Hero> allHeroes = testDao.getAllHeroes();
         orgToEdit.setHeroesInOrg(allHeroes);
-        orgToEdit.setOrgLoc(testDao.getALocation(2));
         testDao.editOrganization(orgToEdit);
         
         Organization shouldBeTestOrg = testDao.getAnOrganization(orgToEdit.getId());
         
-        Assert.assertEquals("shouldBeTestOrg should now be Test Org", orgToEdit.getName(), shouldBeTestOrg.getName());
+        Assert.assertEquals("shouldBeTestOrg should now be Test Org as name", orgToEdit.getName(), shouldBeTestOrg.getName());
         Assert.assertEquals("shouldBeTestOrg should now have desc of Testy", orgToEdit.getDescription(), shouldBeTestOrg.getDescription());
         Assert.assertEquals("shouldBeTestOrg should now have contact of 0000000", orgToEdit.getContact(), shouldBeTestOrg.getContact());
-        Assert.assertEquals("shouldBeTestOrg should now have 2 heroes", orgToEdit.getHeroesInOrg().size(), shouldBeTestOrg.getHeroesInOrg().size());
-        Assert.assertEquals("shouldBeTestOrg should now be at Asylum", testDao.getALocation(2), shouldBeTestOrg.getOrgLoc());
+        Assert.assertEquals("shouldBeTestOrg should have all heroes", orgToEdit.getHeroesInOrg(), shouldBeTestOrg.getHeroesInOrg());
+        Assert.assertEquals("shouldBeTestOrg should now be at Asylum", orgToEdit.getOrgLoc(), shouldBeTestOrg.getOrgLoc());
+        Assert.assertEquals("shouldBeTestOrg should equal orgToEdit", orgToEdit, shouldBeTestOrg);
     }
     
     @Test

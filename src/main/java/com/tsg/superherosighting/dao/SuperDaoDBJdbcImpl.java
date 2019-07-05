@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -154,8 +155,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     
     @Override
     public void editLocation(Location location) {
-        // edit sightings and orgs to NA location then edit back?
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String EDIT_A_LOC = "UPDATE locations "
+                + "SET LocName = ?, Description = ?, Address = ?, Latitude = ?, Longitude = ? "
+                + "WHERE Id = ?";
+        heySql.update(EDIT_A_LOC, location.getName(), location.getDescription(), location.getAddress(), 
+                location.getLatitude(), location.getLongitude(),
+                location.getId());
     }
     
     @Override
@@ -163,7 +168,17 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     public void removeLocation(int id) {
         // remove sighting because sighting is useless without a location
         // update orgs to NA location
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.updateOrgLocationToNA(id);
+        List<Sighting> sightsToRemove = this.getAllSightings()
+                .stream()
+                .filter(aSighting -> aSighting.getSightLocation().getId() == id)
+                .collect(Collectors.toList());
+        this.removeSightingsFromBridge(sightsToRemove);
+        this.deleteSightings(sightsToRemove);
+        
+        String DELETE_LOC = "DELETE FROM locations WHERE Id = ?";
+        heySql.update(DELETE_LOC, id);
+        
     }
     
     public class LocMapper implements RowMapper<Location> {
@@ -284,7 +299,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public Sighting addSighting(Sighting sighting) {
         final String INSERT_SIGHTING_INTO_SIGHTINGS = "INSERT INTO sightings (LocId, DateTime) VALUES (?, ?)";
-        heySql.update(INSERT_SIGHTING_INTO_SIGHTINGS, sighting.getSightLocation().getId(), sighting.getDateTime());
+        heySql.update(INSERT_SIGHTING_INTO_SIGHTINGS, sighting.getSightLocation().getId(), sighting.getDateTime().withNano(0));
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setId(newId);
         return sighting;
@@ -473,40 +488,10 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         }
     }
 
-    /////////////////////////// SIGHTINGS HELPERS ///////////////////////////
-    public void removeAllHeroesFromSightings(int sightingId) {
-        String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
-        heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
-    }
-    
-    public List<Hero> getAllHeroesForSighting(int sightId) {
-        String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
-                + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
-                + "WHERE heroesandsightings.SightingId = ?";
-        List<Hero> sightHeroes =  heySql.query(SQL_HEROES_FOR_SIGHTING, new HeroMapper(), sightId);
-        for (Hero aHero : sightHeroes) {
-            List<SuperPower> heroesPowers = this.getAllPowersForHero(aHero.getId());
-            aHero.setHeroPowers(heroesPowers);
-        }
-        
-        return sightHeroes;
-    }
-    
-    public void addHeroToSighting(int heroId, int sightingId) {
-        String SQL_SIGHTING_HERO = "INSERT INTO heroesandsightings (HeroId, SightingId) VALUES (?, ?)";
-        heySql.update(SQL_SIGHTING_HERO, heroId, sightingId);
-    }
-    
-    public void addHeroesToSighting(List<Hero> heroesInSighting, int sightingId) {
-        for (Hero aHero : heroesInSighting) {
-            this.addHeroToSighting(sightingId, sightingId);
-        }
-    }
-
-    /////////////////////////// POWER HELPERS ///////////////////////////
-    public void removeAllHeroesFromPower(int powerId) {
-        String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
-        heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
+    /////////////////////////// LOCATION HELPERS ///////////////////////////
+    private void updateOrgLocationToNA(int locId) {
+        String SQL_UPDATE_ORG_BY_LOCID = "UPDATE organizations SET LocId = '-1' WHERE LocId = ?";
+        heySql.update(SQL_UPDATE_ORG_BY_LOCID, locId);
     }
 
     /////////////////////////// ORG HELPERS ///////////////////////////
@@ -537,5 +522,56 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         for (Hero aHero : heroesInOrg) {
             this.addHeroToOrg(aHero.getId(), orgId);
         }
+    }
+
+    /////////////////////////// SIGHTINGS HELPERS ///////////////////////////
+    public void removeAllHeroesFromSightings(int sightingId) {
+        String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
+        heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
+    }
+    
+    public List<Hero> getAllHeroesForSighting(int sightId) {
+        String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
+                + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
+                + "WHERE heroesandsightings.SightingId = ?";
+        List<Hero> sightHeroes = heySql.query(SQL_HEROES_FOR_SIGHTING, new HeroMapper(), sightId);
+        for (Hero aHero : sightHeroes) {
+            List<SuperPower> heroesPowers = this.getAllPowersForHero(aHero.getId());
+            aHero.setHeroPowers(heroesPowers);
+        }
+        
+        return sightHeroes;
+    }
+    
+    public void addHeroToSighting(int heroId, int sightingId) {
+        String SQL_SIGHTING_HERO = "INSERT INTO heroesandsightings (HeroId, SightingId) VALUES (?, ?)";
+        heySql.update(SQL_SIGHTING_HERO, heroId, sightingId);
+    }
+    
+    public void addHeroesToSighting(List<Hero> heroesInSighting, int sightingId) {
+        for (Hero aHero : heroesInSighting) {
+            this.addHeroToSighting(aHero.getId(), sightingId);
+        }
+    }
+
+    /////////////////////////// POWER HELPERS ///////////////////////////
+    public void removeAllHeroesFromPower(int powerId) {
+        String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
+        heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
+    }
+    
+    private void removeSightingsFromBridge(List<Sighting> sightsToRemove) {
+        String DELETE_SIGHTING_FROM_BRIDGE = "DELETE FROM heroesandsightings WHERE SightingId = ?";
+        for (Sighting aSighting : sightsToRemove) {
+            heySql.update(DELETE_SIGHTING_FROM_BRIDGE, aSighting.getId());
+        }
+    }
+    
+    private void deleteSightings(List<Sighting> sightsToRemove) {
+        String DELETE_SIGHTING_WITH_LOC = "DELETE FROM sightings WHERE Id = ?";
+        for (Sighting aSighting : sightsToRemove) {
+            heySql.update(DELETE_SIGHTING_WITH_LOC, aSighting.getId());
+        }
+        
     }
 }
