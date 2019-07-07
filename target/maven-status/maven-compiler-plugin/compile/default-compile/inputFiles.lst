@@ -1,9 +1,11 @@
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dto\Hero.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dto\Organization.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dto\SuperPower.java
+C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\controllers\LocationController.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dto\Sighting.java
+C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\controllers\HeroController.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dao\SuperDao.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\SuperApp.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl.java
-C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\controllers\SuperController.java
 C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\dto\Location.java
+C:\Users\Bryan\Documents\Repo\java-lou-0419-individual-capstone-BryantFehr\src\main\java\com\tsg\superherosighting\controllers\PowerController.java

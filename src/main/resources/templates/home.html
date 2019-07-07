@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+
+        <title>Super Hero Sightings</title>
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <center>
+                            <h1>
+                                The Superest Sightings Website On the Interwebs
+                            </h1>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='home'" style="width:75%" class="btn btn-success">
+                                Home
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='heroes'" style="width:75%" class="btn btn-success">
+                                Heroes
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='powers'" style="width:75%" class="btn btn-success">
+                                Powers
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='organizations'" style="width:75%" class="btn btn-success">
+                                Organizations
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='sightings'" style="width:75%" class="btn btn-success">
+                                Sightings
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href='locations'" style="width:75%" class="btn btn-success">
+                                Locations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget sapien sapien. Curabitur in metus urna. In hac habitasse platea dictumst. Phasellus eu sem sapien, sed vestibulum velit. Nam purus nibh, lacinia non faucibus et, pharetra in dolor. Sed iaculis posuere diam ut cursus. <em>Morbi commodo sodales nisi id sodales. Proin consectetur, nisi id commodo imperdiet, metus nunc consequat lectus, id bibendum diam velit et dui.</em> Proin massa magna, vulputate nec bibendum nec, posuere nec lacus. <small>Aliquam mi erat, aliquam vel luctus eu, pharetra quis elit. Nulla euismod ultrices massa, et feugiat ipsum consequat eu.</small>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+                                <th>
+                                    Date And Time
+                                </th>
+                                <th>
+                                    Heroes
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    Sewer
+                                </td>
+                                <td>
+                                    01/04/2019 13:23
+                                </td>
+                                <td>
+                                    Batman, Joker
+                                </td>
+                            </tr>
+                            <tr class="table table-striped">
+                                <td>
+                                    2
+                                </td>
+                                <td>
+                                    Down the street
+                                </td>
+                                <td>
+                                    01/06/2019 18:19
+                                </td>
+                                <td>
+                                    Mr. Freeze
+                                </td>
+                            </tr>
+                            <tr class="table table-striped">
+                                <td>
+                                    3
+                                </td>
+                                <td>
+                                    My House
+                                </td>
+                                <td>
+                                    03/06/2019 18:19
+                                </td>
+                                <td>
+                                    Batman
+                                </td>
+                            </tr>
+                            <tr class="table table-striped">
+                                <td>
+                                    4
+                                </td>
+                                <td>
+                                    Your House
+                                </td>
+                                <td>
+                                    03/06/2019 19:19
+                                </td>
+                                <td>
+                                    Joker
+                                </td>
+                            </tr>
+                            <tr class="table table-striped">
+                                <td>
+                                    5
+                                </td>
+                                <td>
+                                    City Hall
+                                </td>
+                                <td>
+                                    04/06/2019 22:19
+                                </td>
+                                <td>
+                                    Batman, Joker, Mr. Freeze
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        <script>
+
+
+        </script>
+    </body>
+
+</html>

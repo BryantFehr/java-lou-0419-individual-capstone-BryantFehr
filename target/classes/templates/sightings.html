@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+        <title>Super Hero Sightings</title>
+    </head>
+
+    <body>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <center>
+                            <h1>
+                                The Superest Sightings Website On the Interwebs
+                            </h1>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'home'" style="width:75%" class="btn btn-success">
+                                Home
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'heroes'" style="width:75%" class="btn btn-success">
+                                Heroes
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'powers'" style="width:75%" class="btn btn-success">
+                                Powers
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'organizations'" style="width:75%" class="btn btn-success">
+                                Organizations
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'sightings'" style="width:75%" class="btn btn-success">
+                                Sightings
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'locations'" style="width:75%" class="btn btn-success">
+                                Locations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+
+            <div class="row m-4 border border-dark">
+                <div class="col-3 text-center m-3">
+                    <span class="h3">Add Sighting</span>
+                </div>
+                <div class="col-7 text-center m-3">
+                    <form action="addSighting" method="POST">
+
+
+                        <div class="form-group row">
+                            <label for="heroes" class="col-3 col-form-label">
+                                Heroes</label>
+                            <div class="col-9">
+                                <select multiple id="heroes" name="heroId" 
+                                        class="form-control" >
+                                    <option th:each="hero : ${heroes}" 
+                                            th:value="${hero.id}" 
+                                            th:text="${hero.name}">
+                                        Hero</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="datetimepicker2" class="col-3 col-form-label">
+                                Time</label>
+                            <div class="col-9">
+                                <div id="datetimepicker2" class="input-append">
+                                    <input data-format="MM/dd/yyyy HH:mm:ss PP" type="text"></input>
+                                    <span class="add-on">
+                                        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                        </i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="location" class="col-3 col-form-label">
+                                Location</label>
+                            <div class="col-9">
+                                <select id="location" name="locationId" class="form-control" >
+                                    <option th:each="location : ${locations}" 
+                                            th:value="${location.id}" 
+                                            th:text="${location.name}">
+                                        Location Name</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-9">
+                            <button type="submit" class="btn btn-success">Add Sighting</button>
+                        </div> 
+                    </form>
+                </div>
+            </div>
+
+            <div class="row m-4 border border-dark">
+                <div class="col text-center m-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date And Time</th>
+                                <th>Heroes</th>
+                                <th>Location</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="sighting : ${sightings}">
+                                <td th:text="${sighting.id}">Sighting Id</td>
+                                <td th:text='${sighting.dateTime}'>Date and Time</td>
+                                <td>
+                                    <div th:each="hero : ${sighting.heroesAtSighting}">
+                                        <span th:text="${hero.name}"></span>
+                                    </div>
+                                </td>
+                                <td th:text="${sighting.sightLocation.name}">Location Name</td>
+                                <td>Edit</td>
+                                <td>Delete</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        <!--
+        <script type="text/javascript">
+                                $(function () {
+                                    $('#datetimepicker2').datetimepicker({
+                                        language: 'en',
+                                        pick12HourFormat: true
+                                    });
+                                });
+        </script>
+        <script>
+
+
+        </script>
+        -->
+    </body>
+
+</html>

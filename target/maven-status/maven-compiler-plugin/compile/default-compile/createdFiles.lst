@@ -1,7 +1,7 @@
 com\tsg\superherosighting\dao\SuperDao.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$PowerMapper.class
+com\tsg\superherosighting\controllers\PowerController.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$HeroMapper.class
-com\tsg\superherosighting\controllers\SuperController.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$SightingMapper.class
 com\tsg\superherosighting\dto\Sighting.class
 com\tsg\superherosighting\dto\Organization.class
@@ -11,4 +11,6 @@ com\tsg\superherosighting\dto\Location.class
 com\tsg\superherosighting\SuperApp.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$OrgMapper.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl.class
+com\tsg\superherosighting\controllers\LocationController.class
 com\tsg\superherosighting\dao\SuperDaoDBJdbcImpl$LocMapper.class
+com\tsg\superherosighting\controllers\HeroController.class

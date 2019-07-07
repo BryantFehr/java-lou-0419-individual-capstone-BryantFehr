@@ -61,7 +61,6 @@ public class HeroesTest extends TestDBSetUpMethods {
     public void testMethodAddAndGetHeroWithOnePower() {
 
         Hero testHero = new Hero();
-        // testHero.setId(3);
         testHero.setName("Test Man");
         testHero.setIsHero(true);
         testHero.setDescription("He is testy!");

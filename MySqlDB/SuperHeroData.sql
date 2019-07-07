@@ -30,7 +30,7 @@ INSERT INTO `heroesandsuperpowers` (`Id`, `HeroId`, `SuperPowerId`) VALUES ('3',
 INSERT INTO `heroesandsuperpowers` (`Id`, `HeroId`, `SuperPowerId`) VALUES ('4', '2', '3');
 
 -- SIGHTINGS --
-INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('1', '4', '2019-01-16 23:12:01');
+INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('1', '4', '2019-01-16 22:12:01');
 INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('2', '2', '2019-01-17 23:12:01');
 
 -- HEROES & SIGHTINGS --
