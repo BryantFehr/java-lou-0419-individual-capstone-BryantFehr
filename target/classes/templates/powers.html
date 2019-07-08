@@ -111,7 +111,7 @@
                             <tr th:each="power : ${powers}">
                                 <td th:text="${power.id}">Power Id</td>
                                 <td th:text='${power.name}'>Power Name</td>
-                                <td>Edit</td>
+                                <td><a href="#" th:href="@{/editPower(id=${power.id})}">Edit</a></td>
                                 <td>Delete</td>
                             </tr>
                         </tbody>

@@ -5,7 +5,7 @@
  */
 package com.tsg.superherosighting.controllers;
 
-import com.tsg.superherosighting.dao.SuperDao;
+import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.SuperPower;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PowerController {
     
     @Autowired
-    SuperDao superDao;
+    SuperDaoDBJdbcImpl superDao;
     
     @GetMapping("powers")
     public String displayPowers(Model model) {
@@ -42,4 +42,27 @@ public class PowerController {
         
         return "redirect:/powers";
     }
+    
+    @GetMapping("editPower")
+    public String editPower(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        SuperPower power = superDao.getASuperpower(id);
+        
+        model.addAttribute("power", power);
+        return "editPower";
+    }
+    
+    @PostMapping("editPower")
+    public String performEditPower (HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        SuperPower power = superDao.getASuperpower(id);
+        
+        power.setName(request.getParameter("name"));
+        
+        superDao.editSuperpower(power);
+        
+        return "redirect:/powers";
+    }
+    
+    
 }

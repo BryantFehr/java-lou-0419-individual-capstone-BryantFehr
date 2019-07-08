@@ -155,20 +155,13 @@
                                 <td th:text="${location.description}">Description</td>
                                 <td th:text="${location.latitude}">Latitude</td>
                                 <td th:text="${location.longitude}">Longitude</td>
-                                <td>Edit</td>
+                                <td><a href="#" th:href="@{/editLocation(id=${location.id})}">Edit</a></td>
                                 <td>Delete</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
-
-
-
-
-
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

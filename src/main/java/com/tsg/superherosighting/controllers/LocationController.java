@@ -5,7 +5,7 @@
  */
 package com.tsg.superherosighting.controllers;
 
-import com.tsg.superherosighting.dao.SuperDao;
+import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Location;
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LocationController {
     
     @Autowired
-    SuperDao superDao;
+    SuperDaoDBJdbcImpl superDao;
     
     @GetMapping("locations")
     public String displayLocations(Model model) {
@@ -52,6 +52,31 @@ public class LocationController {
         return "redirect:/locations";
     }
     
+    @GetMapping("editLocation")
+    public String editLocation(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Location location = superDao.getALocation(id);
+        
+        model.addAttribute("location", location);
+        
+        return "editLocation";
+    }
     
+    @PostMapping("editLocation")
+    public String performEditLocation(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Location location = superDao.getALocation(id);
+        
+        location.setName(request.getParameter("name"));
+        location.setAddress(request.getParameter("address"));
+        location.setDescription(request.getParameter("description"));
+        location.setLatitude(new BigDecimal(request.getParameter("latitude")));
+        location.setLongitude(new BigDecimal(request.getParameter("longitude")));
+        
+        superDao.editLocation(location);
+        
+        
+        return "redirect:/locations";
+    }
 
 }

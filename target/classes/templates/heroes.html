@@ -112,10 +112,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="ishero" class="col-3 col-form-label">Hero/Villain</label>
                             <div class="col-9">
+                                <select id="ishero" name="ishero" class="form-control" >
+                                    <option value="true">Hero</option>
+                                    <option value="false">Villain</option>
+                                </select>
+                                <!--
                                 <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiotrue" value="true">Hero</label>
                                 <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiofalse" value="false">Villain</label>
-                            </div> 
+                                -->
+                                </div> 
                         </div>
                         <div class="col-9">
                             <button type="submit" class="btn btn-success">Add Hero</button>
@@ -149,7 +156,7 @@
                                     </div>
                                 </td>
                                 <td th:text="${hero.Description}">Description</td>
-                                <td>Edit</td>
+                                <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
                                 <td>Delete</td>
                             </tr>
                         </tbody>

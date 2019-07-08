@@ -8,8 +8,9 @@ package com.tsg.superherosighting.controllers;
 import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Hero;
 import com.tsg.superherosighting.dto.Location;
-import com.tsg.superherosighting.dto.Organization;
 import com.tsg.superherosighting.dto.Sighting;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,9 @@ public class SightingController {
         }
         // get date time
         // add date time to sighting
-        
+        String dateTime = request.getParameter("sighttime");
+        LocalDateTime localDateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME);
+        sighting.setDateTime(localDateTime);
         
         String locId = request.getParameter("locationId");
                 sighting.setSightLocation(superDao.getALocation(Integer.parseInt(locId)));
