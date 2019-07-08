@@ -95,14 +95,14 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="sighttime" class="col-3 col-form-label">
                                 Time</label>
                             <div class="col-9">
                                 <div id="sighttime" class="input-append">
                                     <input type="datetime-local" name="sighttime">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                     </div>
                                 </td>
                                 <td th:text="${sighting.sightLocation.name}">Location Name</td>
-                                <td>Edit</td>
+                                <td><a href="#" th:href="@{/editSighting(id=${sighting.id})}">Edit</a></td>
                                 <td>Delete</td>
                             </tr>
                         </tbody>

@@ -76,16 +76,16 @@
 
             <div class="row m-4 border border-dark">
                 <div class="col-3 text-center m-3">
-                    <span class="h3">Add Organization</span>
+                    <span class="h3">Edit Organization</span>
                 </div>
                 <div class="col-7 text-center m-3">
-                    <form action="addOrganization" method="POST">
+                    <form action="editOrganization" method="POST">
                         <div class="form-group row">
                             <label for="name" class="col-3 col-form-label">
                                 Name</label>
                             <div class="col-9">
                                 <input type="text" name="name" 
-                                       id="name" class="form-control"/>
+                                       id="name" class="form-control" th:value="${organization.name}"/>
                             </div>
                         </div>
 
@@ -97,7 +97,8 @@
                                         class="form-control" >
                                     <option th:each="hero : ${heroes}" 
                                             th:value="${hero.id}" 
-                                            th:text="${hero.name}">
+                                            th:text="${hero.name}"
+                                            th:selected="${organization.heroesInOrg.contains(hero)}">
                                         Hero</option>
                                 </select>
                             </div>
@@ -108,7 +109,7 @@
                                 Description</label>
                             <div class="col-9">
                                 <input type="text" name="description" 
-                                       id="description" class="form-control"/>
+                                       id="description" class="form-control" th:value="${organization.description}"/>
                             </div>
                         </div>
 
@@ -117,7 +118,7 @@
                                 Contact</label>
                             <div class="col-9">
                                 <input type="text" name="contact" 
-                                       id="contact" class="form-control"/>
+                                       id="contact" class="form-control" th:value="${organization.contact}"/>
                             </div>
                         </div>
 
@@ -128,59 +129,19 @@
                                 <select id="location" name="locationId" class="form-control" >
                                     <option th:each="location : ${locations}" 
                                             th:value="${location.id}" 
-                                            th:text="${location.name}">
+                                            th:text="${location.name}"
+                                            th:selected="${organization.orgLoc.id == location.id}">
                                         Location Name</option>
                                 </select>
                             </div>
                         </div>
-
+                        <input type="hidden" name="id" th:value="${organization.id}"/>
                         <div class="col-9">
-                            <button type="submit" class="btn btn-success">Add Organization</button>
+                            <button type="submit" class="btn btn-success">Edit Organization</button>
                         </div> 
                     </form>
                 </div>
             </div>
-
-            <div class="row m-4 border border-dark">
-                <div class="col text-center m-3">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Contact</th>
-                                <th>Heroes</th>
-                                <th>Location</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="organization : ${organizations}">
-                                <td th:text="${organization.id}">Org Id</td>
-                                <td th:text='${organization.name}'>Org Name</td>
-                                <td th:text="${organization.description}">Description</td>
-                                <td th:text="${organization.contact}">Contact</td>
-                                <td>
-                                    <div th:each="hero : ${organization.heroesInOrg}">
-                                        <span th:text="${hero.name}"></span>
-                                    </div>
-                                </td>
-                                <td th:text="${organization.orgLoc.name}">Location Name</td>
-                                <td><a href="#" th:href="@{/editOrganization(id=${organization.id})}">Edit</a></td>
-                                <td>Delete</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-
-
-
 
         </div>
 

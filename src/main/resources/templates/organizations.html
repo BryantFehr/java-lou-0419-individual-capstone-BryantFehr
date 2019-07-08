@@ -168,7 +168,7 @@
                                     </div>
                                 </td>
                                 <td th:text="${organization.orgLoc.name}">Location Name</td>
-                                <td>Edit</td>
+                                <td><a href="#" th:href="@{/editOrganization(id=${organization.id})}">Edit</a></td>
                                 <td>Delete</td>
                             </tr>
                         </tbody>

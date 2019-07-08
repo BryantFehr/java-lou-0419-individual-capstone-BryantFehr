@@ -76,18 +76,11 @@
 
             <div class="row m-4 border border-dark">
                 <div class="col-3 text-center m-3">
-                    <span class="h3">Add Organization</span>
+                    <span class="h3">Edit Sighting</span>
                 </div>
                 <div class="col-7 text-center m-3">
-                    <form action="addOrganization" method="POST">
-                        <div class="form-group row">
-                            <label for="name" class="col-3 col-form-label">
-                                Name</label>
-                            <div class="col-9">
-                                <input type="text" name="name" 
-                                       id="name" class="form-control"/>
-                            </div>
-                        </div>
+                    <form action="editSighting" method="POST">
+
 
                         <div class="form-group row">
                             <label for="heroes" class="col-3 col-form-label">
@@ -97,27 +90,21 @@
                                         class="form-control" >
                                     <option th:each="hero : ${heroes}" 
                                             th:value="${hero.id}" 
-                                            th:text="${hero.name}">
+                                            th:text="${hero.name}"
+                                            th:selected="${sighting.heroesAtSighting.contains(hero)}">
                                         Hero</option>
                                 </select>
                             </div>
                         </div>
-
+                        
                         <div class="form-group row">
-                            <label for="description" class="col-3 col-form-label">
-                                Description</label>
+                            <label for="sighttime" class="col-3 col-form-label">
+                                Time</label>
                             <div class="col-9">
-                                <input type="text" name="description" 
-                                       id="description" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="contact" class="col-3 col-form-label">
-                                Contact</label>
-                            <div class="col-9">
-                                <input type="text" name="contact" 
-                                       id="contact" class="form-control"/>
+                                <div id="sighttime" class="input-append">
+                                    <input type="datetime-local" name="sighttime" th:value="${sighting.dateTime}"/>
+                                    
+                                </div>
                             </div>
                         </div>
 
@@ -128,59 +115,19 @@
                                 <select id="location" name="locationId" class="form-control" >
                                     <option th:each="location : ${locations}" 
                                             th:value="${location.id}" 
-                                            th:text="${location.name}">
+                                            th:text="${location.name}"
+                                            th:selected="${sighting.sightLocation.id == location.id}">
                                         Location Name</option>
                                 </select>
                             </div>
                         </div>
-
+                        <input type="hidden" name="id" th:value="${sighting.id}"/>
                         <div class="col-9">
-                            <button type="submit" class="btn btn-success">Add Organization</button>
+                            <button type="submit" class="btn btn-success">Edit Sighting</button>
                         </div> 
                     </form>
                 </div>
             </div>
-
-            <div class="row m-4 border border-dark">
-                <div class="col text-center m-3">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Contact</th>
-                                <th>Heroes</th>
-                                <th>Location</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="organization : ${organizations}">
-                                <td th:text="${organization.id}">Org Id</td>
-                                <td th:text='${organization.name}'>Org Name</td>
-                                <td th:text="${organization.description}">Description</td>
-                                <td th:text="${organization.contact}">Contact</td>
-                                <td>
-                                    <div th:each="hero : ${organization.heroesInOrg}">
-                                        <span th:text="${hero.name}"></span>
-                                    </div>
-                                </td>
-                                <td th:text="${organization.orgLoc.name}">Location Name</td>
-                                <td><a href="#" th:href="@{/editOrganization(id=${organization.id})}">Edit</a></td>
-                                <td>Delete</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-
-
-
 
         </div>
 
@@ -192,10 +139,6 @@
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-        <script>
-
-
-        </script>
     </body>
 
 </html>

@@ -9,7 +9,6 @@ import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Hero;
 import com.tsg.superherosighting.dto.Location;
 import com.tsg.superherosighting.dto.Organization;
-import com.tsg.superherosighting.dto.SuperPower;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -91,13 +90,18 @@ public class OrganizationController {
             heroes.add(superDao.getAHero(Integer.parseInt(heroId)));
         }
         
+        String locId = request.getParameter("locationId");
         
-        
-        
-        
+        organization.setName(request.getParameter("name"));
+        organization.setDescription(request.getParameter("description"));
+        organization.setContact(request.getParameter("contact"));
+        organization.setOrgLoc(superDao.getALocation(Integer.parseInt(locId)));
+        superDao.editOrganization(organization);
+        superDao.addHeroesToOrg(heroes, organization.getId());
+
         return "redirect:/organizations";
     }
 
 }
 
-}
+
