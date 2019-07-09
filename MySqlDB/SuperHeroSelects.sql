@@ -88,6 +88,9 @@ UPDATE superpowers SET PowerName = 'test' WHERE Id = 1;
 DELETE FROM heroesandsuperpowers WHERE SuperPowerId = 1;
 DELETE FROM superpowers WHERE Id = 1;
 
+-- SELECT 10 MOST RECENT SIGHTINGS --
+SELECT * FROM sightings ORDER BY `DateTime` DESC LIMIT 10;
+
 -- JUST CHECKING THAT MY DATA WAS INPUT PROPERLY --
 SELECT
 	heroes.Id AS HeroId,

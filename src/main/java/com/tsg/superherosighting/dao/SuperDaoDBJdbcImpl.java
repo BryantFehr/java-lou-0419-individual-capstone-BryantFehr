@@ -327,6 +327,18 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // location should already be inside of
         return sightings;
     }
+    
+    @Override
+    public List<Sighting> get10RecentSightings() {
+        final String GET_10_RECENT_SIGHTINGS = "SELECT * FROM sightings ORDER BY DateTime DESC LIMIT 10";
+        List<Sighting> recentSightings = heySql.query(GET_10_RECENT_SIGHTINGS, new SightingMapper());
+        for (Sighting aSighting : recentSightings) {
+            List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
+            aSighting.setHeroesAtSighting(heroesAtSighting);
+        }
+        // location should already be inside of
+        return recentSightings;
+    }
 
     @Override
     public void editSighting(Sighting sighting) {

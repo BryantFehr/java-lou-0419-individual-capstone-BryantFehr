@@ -29,7 +29,7 @@ public class HomeController {
     public String displayRecentSightings(Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
         List<Location> locations = superDao.getAllLocations();
-        List<Sighting> sightings = superDao.getAllSightings();
+        List<Sighting> sightings = superDao.get10RecentSightings();
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
         model.addAttribute("sightings", sightings);
