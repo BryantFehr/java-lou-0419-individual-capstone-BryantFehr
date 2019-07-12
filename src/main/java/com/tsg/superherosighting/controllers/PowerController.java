@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -40,7 +41,7 @@ public class PowerController {
         power.setName(name);
         superDao.addSuperpower(power);
         
-        return "redirect:/powers";
+        return "redirect:powers";
     }
     
     @GetMapping("editPower")
@@ -61,8 +62,13 @@ public class PowerController {
         
         superDao.editSuperpower(power);
         
-        return "redirect:/powers";
+        return "redirect:powers";
     }
     
+    @GetMapping("deletePower/{id}")
+    public String deletePower(@PathVariable Integer id) {
+        superDao.removeSuperpower(id);
+        return "redirect:/powers";
+    }
     
 }

@@ -112,7 +112,7 @@
                                 <td th:text="${power.id}">Power Id</td>
                                 <td th:text='${power.name}'>Power Name</td>
                                 <td><a href="#" th:href="@{/editPower(id=${power.id})}">Edit</a></td>
-                                <td>Delete</td>
+                                <td><a href="#" th:onclick="'javascript:deletePower(' + ${power.id} + ')'">Delete</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -136,8 +136,16 @@
         crossorigin="anonymous"></script>
 
         <script>
-
-
+    
+            function deletePower(id) {
+        $.ajax ({
+            type: 'GET',
+            url: "http://localhost:8080/deletePower/" + id,
+            success: function (status) {
+                window.location.reload();
+            }
+        });
+    }
         </script>
     </body>
 

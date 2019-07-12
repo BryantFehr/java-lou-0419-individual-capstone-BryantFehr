@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -56,7 +57,7 @@ public class HeroController {
         superDao.addHero(hero);
         superDao.addPowersToHero(powers, hero.getId());
 
-        return "redirect:/heroes";
+        return "redirect:heroes";
     }
 
     @GetMapping("editHero")
@@ -92,6 +93,12 @@ public class HeroController {
         superDao.editHero(hero);
         superDao.addPowersToHero(powers, hero.getId());
         
+        return "redirect:heroes";
+    }
+    
+    @GetMapping("deleteHero/{id}")
+    public String deleteHero(@PathVariable Integer id) {
+        superDao.removeHero(id);
         return "redirect:/heroes";
     }
 

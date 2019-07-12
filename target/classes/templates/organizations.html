@@ -169,7 +169,7 @@
                                 </td>
                                 <td th:text="${organization.orgLoc.name}">Location Name</td>
                                 <td><a href="#" th:href="@{/editOrganization(id=${organization.id})}">Edit</a></td>
-                                <td>Delete</td>
+                                <td><a href="#" th:onclick="'javascript:deleteOrganization(' + ${organization.id} + ')'">Delete</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -193,8 +193,16 @@
         crossorigin="anonymous"></script>
 
         <script>
-
-
+    
+            function deleteOrganization(id) {
+        $.ajax ({
+            type: 'GET',
+            url: "http://localhost:8080/deleteOrganization/" + id,
+            success: function (status) {
+                window.location.reload();
+            }
+        });
+    }
         </script>
     </body>
 

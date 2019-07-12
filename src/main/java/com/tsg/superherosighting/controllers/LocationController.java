@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -49,7 +50,7 @@ public class LocationController {
         location.setLongitude(new BigDecimal(longitude));
         superDao.addLocation(location);
         
-        return "redirect:/locations";
+        return "redirect:locations";
     }
     
     @GetMapping("editLocation")
@@ -76,7 +77,12 @@ public class LocationController {
         superDao.editLocation(location);
         
         
-        return "redirect:/locations";
+        return "redirect:locations";
     }
 
+        @GetMapping("deleteLocation/{id}")
+    public String deleteLocation(@PathVariable Integer id) {
+        superDao.removeLocation(id);
+        return "redirect:/locations";
+    }
 }

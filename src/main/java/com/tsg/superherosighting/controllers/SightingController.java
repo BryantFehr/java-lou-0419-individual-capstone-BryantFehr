@@ -8,7 +8,6 @@ package com.tsg.superherosighting.controllers;
 import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Hero;
 import com.tsg.superherosighting.dto.Location;
-import com.tsg.superherosighting.dto.Organization;
 import com.tsg.superherosighting.dto.Sighting;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -60,7 +60,7 @@ public class SightingController {
                 superDao.addSighting(sighting);
                 superDao.addHeroesToSighting(heroes, sighting.getId());
         
-        return "redirect:/sightings";
+        return "redirect:sightings";
     }
     
     @GetMapping("editSighting")
@@ -99,6 +99,12 @@ public class SightingController {
         superDao.editSighting(sighting);
         superDao.addHeroesToSighting(heroes, sighting.getId());
 
+        return "redirect:sightings";
+    }
+    
+    @GetMapping("deleteSighting/{id}")
+    public String deleteSighting(@PathVariable Integer id) {
+        superDao.removeSighting(id);
         return "redirect:/sightings";
     }
 }
