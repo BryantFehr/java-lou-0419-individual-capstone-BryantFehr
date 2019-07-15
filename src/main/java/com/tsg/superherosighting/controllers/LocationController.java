@@ -38,6 +38,9 @@ public class LocationController {
     @GetMapping("locations")
     public String displayLocations(Model model) {
         List<Location> locations = superDao.getAllLocations();
+        Location naLocation = superDao.getALocation(-1);
+        locations.remove(naLocation);
+        
         model.addAttribute("locations", locations);
         model.addAttribute("errors", violations);
         return "locations";

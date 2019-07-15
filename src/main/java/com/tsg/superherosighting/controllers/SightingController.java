@@ -42,8 +42,13 @@ public class SightingController {
     @GetMapping("sightings")
     public String displaySightings(Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
+        
         List<Location> locations = superDao.getAllLocations();
+        Location naLocation = superDao.getALocation(-1);
+        locations.remove(naLocation);
+        
         List<Sighting> sightings = superDao.getAllSightings();
+        model.addAttribute("currentTime", LocalDateTime.now().withNano(0).withSecond(0));
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
         model.addAttribute("sightings", sightings);
@@ -94,6 +99,9 @@ public class SightingController {
 
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
+        Location naLocation = superDao.getALocation(-1);
+        locations.remove(naLocation);
+            
         model.addAttribute("sighting", sighting);
         model.addAttribute("errors", violations);
 
@@ -132,6 +140,9 @@ public class SightingController {
             sighting = superDao.getASighting(id);
             List<Hero> allHeroes = superDao.getAllHeroes();
             List<Location> allLocs = superDao.getAllLocations();
+            Location naLocation = superDao.getALocation(-1);
+            allLocs.remove(naLocation);
+            
             model.addAttribute("heroes", allHeroes);
             model.addAttribute("locations", allLocs);
             model.addAttribute("sighting", sighting);

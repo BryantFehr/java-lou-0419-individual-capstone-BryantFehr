@@ -106,7 +106,7 @@
                                 Time</label>
                             <div class="col-9">
                                 <div id="sighttime" class="input-append">
-                                    <input type="datetime-local" name="sighttime">
+                                    <input type="datetime-local" name="sighttime" th:value="${currentTime}" min="1934-01-01T00:01" required/>
 
                                 </div>
                             </div>
