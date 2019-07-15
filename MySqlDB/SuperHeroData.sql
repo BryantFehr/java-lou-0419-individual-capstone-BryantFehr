@@ -1,10 +1,10 @@
-USE SuperHeroes;
+USE TestSuperHeroes;
 
 -- LOCATIONS --
-INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('1', 'Batcave', 'roomy', 'Manor', '10.00000001', '10.00000001');
-INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('2', 'Asylum', 'tight', 'Jail', '20.00000002', '20.00000002');
-INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('3', 'JusticeHQ', 'tall', 'big', '30.00000003', '30.00000003');
-INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('4', 'Sewer', 'narrow', 'sewage', '40.00000004', '40.00000004');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('1', 'Batcave', 'roomy', 'Manor', '10.123456', '110.123456');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('2', 'Asylum', 'tight', 'Jail', '20.123456', '120.123456');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('3', 'JusticeHQ', 'tall', 'big', '30.123456', '130.123456');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('4', 'Sewer', 'narrow', 'sewage', '40.123456', '140.123456');
 
 -- HEROES --
 INSERT INTO `heroes` (`Id`, `HeroName`, `IsHero`, `Description`) VALUES ('1', 'Batman', '1', 'batty');
@@ -38,4 +38,4 @@ INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1'
 INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1');
 INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2');
 
-INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000');
+-- INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000');

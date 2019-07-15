@@ -1,191 +1,197 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+    <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-    <title>Super Hero Sightings</title>
-</head>
+        <title>Super Hero Sightings</title>
+    </head>
 
-<body>
+    <body>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                    <center>
-                        <h1>
-                            The Superest Sightings Website On the Interwebs
-                        </h1>
-                    </center>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'home'" style="width:75%"
-                            class="btn btn-success">
-                            Home
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'heroes'" style="width:75%"
-                            class="btn btn-success">
-                            Heroes
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'powers'" style="width:75%"
-                            class="btn btn-success">
-                            Powers
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'organizations'" style="width:75%"
-                            class="btn btn-success">
-                            Organizations
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'sightings'" style="width:75%"
-                            class="btn btn-success">
-                            Sightings
-                        </button>
-                    </div>
-                    <div class="col-md-2">
-
-                        <button type="button" onclick="location.href = 'locations'" style="width:75%"
-                            class="btn btn-success">
-                            Locations
-                        </button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <center>
+                            <h1>
+                                The Superest Sightings Website On the Interwebs
+                            </h1>
+                        </center>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'home'" style="width:75%"
+                                    class="btn btn-success">
+                                Home
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'heroes'" style="width:75%"
+                                    class="btn btn-success">
+                                Heroes
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'powers'" style="width:75%"
+                                    class="btn btn-success">
+                                Powers
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'organizations'" style="width:75%"
+                                    class="btn btn-success">
+                                Organizations
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'sightings'" style="width:75%"
+                                    class="btn btn-success">
+                                Sightings
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button type="button" onclick="location.href = 'locations'" style="width:75%"
+                                    class="btn btn-success">
+                                Locations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
             </div>
-        </div>
 
-        <div class="row m-4 border border-dark">
-            <div class="col-3 text-center m-3">
-                <span class="h3">Add Hero</span>
-            </div>
-            <div class="col-7 text-center m-3">
-                <form action="addHero" method="POST">
-                    <div class="form-group row">
-                        <label for="name" class="col-3 col-form-label">
-                            Name</label>
-                        <div class="col-9">
-                            <input type="text" name="name" id="name" class="form-control" />
+            <div class="row m-4 border border-dark">
+                <div class="col-12 m-1 text-center" 
+                     th:if="${!errors.isEmpty()}">
+                    <p class="alert alert-danger" th:each="error : ${errors}" 
+                       th:text="${error.message}">Error message</p>
+                </div>
+                <div class="col-3 text-center m-3">
+                    <span class="h3">Add Hero</span>
+                </div>
+                <div class="col-7 text-center m-3">
+                    <form action="addHero" method="POST">
+                        <div class="form-group row">
+                            <label for="name" class="col-3 col-form-label">
+                                Name</label>
+                            <div class="col-9">
+                                <input type="text" name="name" 
+                                       id="name" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label for="powers" class="col-3 col-form-label">
-                            Powers</label>
-                        <div class="col-9">
-                            <select multiple id="powers" name="powerId" class="form-control">
-                                <option th:each="power : ${powers}" th:value="${power.id}" th:text="${power.name}">
-                                    Power</option>
-                            </select>
+                        <div class="form-group row">
+                            <label for="powers" class="col-3 col-form-label">
+                                Powers</label>
+                            <div class="col-9">
+                                <select multiple id="powers" name="powerId" class="form-control">
+                                    <option th:each="power : ${powers}" th:value="${power.id}" th:text="${power.name}">
+                                        Power</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label for="description" class="col-3 col-form-label">
-                            Description</label>
-                        <div class="col-9">
-                            <input type="text" name="description" id="description" class="form-control" />
+                        <div class="form-group row">
+                            <label for="description" class="col-3 col-form-label">
+                                Description</label>
+                            <div class="col-9">
+                                <input type="text" name="description" id="description" class="form-control" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="ishero" class="col-3 col-form-label">Hero/Villain</label>
-                        <div class="col-9">
-                            <select id="ishero" name="ishero" class="form-control">
-                                <option value="true">Hero</option>
-                                <option value="false">Villain</option>
-                            </select>
-                            <!--
-                                <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiotrue" value="true">Hero</label>
-                                <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiofalse" value="false">Villain</label>
+                        <div class="form-group row">
+                            <label for="ishero" class="col-3 col-form-label">Hero/Villain</label>
+                            <div class="col-9">
+                                <select id="ishero" name="ishero" class="form-control">
+                                    <option value="true">Hero</option>
+                                    <option value="false">Villain</option>
+                                </select>
+                                <!--
+                                    <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiotrue" value="true">Hero</label>
+                                    <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiofalse" value="false">Villain</label>
                                 -->
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-9">
-                        <button type="submit" class="btn btn-success">Add Hero</button>
-                    </div>
-                </form>
+                        <div class="col-9">
+                            <button type="submit" class="btn btn-success">Add Hero</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row m-4 border border-dark">
+                <div id="tableToReload" class="col text-center m-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Hero</th>
+                                <th>Powers</th>
+                                <th>Description</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="hero : ${heroes}">
+                                <td th:text="${hero.id}">Hero Id</td>
+                                <td th:text='${hero.name}'>Hero Name</td>
+                                <td th:text="${hero.IsHero}">IsHero</td>
+                                <td>
+                                    <div th:each="power : ${hero.heroPowers}">
+                                        <span th:text="${power.name}"></span>
+                                    </div>
+                                </td>
+                                <td th:text="${hero.Description}">Description</td>
+                                <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
+                                <td><a href="#" th:onclick="'javascript:deleteHero(' + ${hero.id} + ')'">Delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="row m-4 border border-dark">
-            <div id="tableToReload" class="col text-center m-3">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Hero</th>
-                            <th>Powers</th>
-                            <th>Description</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="hero : ${heroes}">
-                            <td th:text="${hero.id}">Hero Id</td>
-                            <td th:text='${hero.name}'>Hero Name</td>
-                            <td th:text="${hero.IsHero}">IsHero</td>
-                            <td>
-                                <div th:each="power : ${hero.heroPowers}">
-                                    <span th:text="${power.name}"></span>
-                                </div>
-                            </td>
-                            <td th:text="${hero.Description}">Description</td>
-                            <td><a href="#" th:href="@{/editHero(id=${hero.id})}">Edit</a></td>
-                            <td><a href="#" th:onclick="'javascript:deleteHero(' + ${hero.id} + ')'">Delete</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-    <script>
-        function deleteHero(id) {
-    $.ajax ({
-        type: 'GET',
-        url: "http://localhost:8080/deleteHero/" + id,
-        success: function (status) {
-            console.log("THIS WORKS");
-            window.location.reload();
-        }
-    });
-}
-    </script>
-</body>
+        <script>
+                                function deleteHero(id) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: "http://localhost:8080/deleteHero/" + id,
+                                        success: function (status) {
+                                            console.log("THIS WORKS");
+                                            window.location.reload();
+                                        }
+                                    });
+                                }
+        </script>
+    </body>
 
 </html>

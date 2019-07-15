@@ -5,6 +5,8 @@
  */
 package com.tsg.superherosighting.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,9 @@ import lombok.NoArgsConstructor;
 public class SuperPower {
 
     private int id;
+    
+    @Size(max = 100, message = "Name must be lass than 100 characters.")
+    @NotBlank(message = "Name must not be empty.")
     private String name;
 
 }

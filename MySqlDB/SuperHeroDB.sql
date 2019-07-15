@@ -1,13 +1,13 @@
-DROP DATABASE IF EXISTS SuperHeroes;
-CREATE DATABASE SuperHeroes;
+DROP DATABASE IF EXISTS TestSuperHeroes;
+CREATE DATABASE TestSuperHeroes;
 
-USE SuperHeroes;
+USE TestSuperHeroes;
 
 CREATE TABLE Heroes(
 Id INT PRIMARY KEY AUTO_INCREMENT,
 HeroName VARCHAR(100) NOT NULL,
 IsHero BOOLEAN NOT NULL,
-`Description` VARCHAR(250) NOT NULL
+`Description` VARCHAR(250) NULL
 );
 
 CREATE TABLE SuperPowers(
@@ -18,10 +18,10 @@ PowerName VARCHAR(100) NOT NULL
 CREATE TABLE Locations(
 Id INT PRIMARY KEY AUTO_INCREMENT,
 LocName VARCHAR(100) NOT NULL,
-`Description` VARCHAR(250) NOT NULL,
+`Description` VARCHAR(250) NULL,
 Address VARCHAR (150) NOT NULL,
-Latitude Decimal(10,8) NOT NULL,
-Longitude Decimal(10,8) NOT NULL
+Latitude Decimal(8,6) NULL,
+Longitude Decimal(9,6) NULL
 );
 
 CREATE TABLE Sightings(
@@ -80,5 +80,4 @@ FOREIGN KEY (HeroId) REFERENCES Heroes(Id);
 ALTER TABLE HeroesAndSuperPowers ADD CONSTRAINT fk_HeroesAndSuperPowersToSuperPowers
 FOREIGN KEY (SuperPowerId) REFERENCES SuperPowers(Id);
 
--- INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000');
--- INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-2', 'Temp Loc', 'NA', 'NA', '00.00000000', '00.00000000');
+INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`) VALUES ('-1', 'NA', 'NA', 'NA');

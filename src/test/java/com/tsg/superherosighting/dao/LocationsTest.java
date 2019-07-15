@@ -41,7 +41,7 @@ public class LocationsTest extends TestDBSetUpMethods {
         testLoc.setDescription("testy");
         testLoc.setAddress("Nowhere lane");
 
-        BigDecimal latLong = new BigDecimal("10.00000001");
+        BigDecimal latLong = new BigDecimal("10.123456");
         testLoc.setLatitude(latLong);
         testLoc.setLongitude(latLong);
         testDao.addLocation(testLoc);
@@ -71,7 +71,7 @@ public class LocationsTest extends TestDBSetUpMethods {
         locToEdit.setDescription("testy");
         locToEdit.setAddress("Test Lane");
 
-        BigDecimal latLong = new BigDecimal("99.00000009");
+        BigDecimal latLong = new BigDecimal("99.123456");
         locToEdit.setLatitude(latLong);
         locToEdit.setLongitude(latLong);
         testDao.editLocation(locToEdit);

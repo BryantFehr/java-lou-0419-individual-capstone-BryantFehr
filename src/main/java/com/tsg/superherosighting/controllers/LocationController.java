@@ -8,8 +8,14 @@ package com.tsg.superherosighting.controllers;
 import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Location;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,64 +29,82 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class LocationController {
-    
+
     @Autowired
     SuperDaoDBJdbcImpl superDao;
-    
+
+    Set<ConstraintViolation<Location>> violations = new HashSet<>();
+
     @GetMapping("locations")
     public String displayLocations(Model model) {
         List<Location> locations = superDao.getAllLocations();
         model.addAttribute("locations", locations);
+        model.addAttribute("errors", violations);
         return "locations";
     }
-    
+
     @PostMapping("addLocation")
     public String addLocation(HttpServletRequest request) {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String description = request.getParameter("description");
-        String latitude = request.getParameter("latitude");
-        String longitude = request.getParameter("longitude");
-        
+        String latAsString = request.getParameter("latitude");
+        String longAsString = request.getParameter("longitude");
+
         Location location = new Location();
         location.setName(name);
         location.setAddress(address);
         location.setDescription(description);
-        location.setLatitude(new BigDecimal(latitude));
-        location.setLongitude(new BigDecimal(longitude));
-        superDao.addLocation(location);
-        
+        location.setLatitude(new BigDecimal(latAsString).setScale(6, RoundingMode.HALF_EVEN));
+        location.setLongitude(new BigDecimal(longAsString).setScale(6, RoundingMode.HALF_EVEN));
+
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(location);
+
+        if (violations.isEmpty()) {
+            superDao.addLocation(location);
+        }
+
         return "redirect:locations";
     }
-    
+
     @GetMapping("editLocation")
     public String editLocation(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
         Location location = superDao.getALocation(id);
-        
+
         model.addAttribute("location", location);
-        
+        model.addAttribute("errors", violations);
+
         return "editLocation";
     }
-    
+
     @PostMapping("editLocation")
-    public String performEditLocation(HttpServletRequest request) {
+    public String performEditLocation(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
         Location location = superDao.getALocation(id);
-        
+
         location.setName(request.getParameter("name"));
         location.setAddress(request.getParameter("address"));
         location.setDescription(request.getParameter("description"));
-        location.setLatitude(new BigDecimal(request.getParameter("latitude")));
-        location.setLongitude(new BigDecimal(request.getParameter("longitude")));
-        
-        superDao.editLocation(location);
-        
-        
-        return "redirect:locations";
+        location.setLatitude(new BigDecimal(request.getParameter("latitude")).setScale(6, RoundingMode.HALF_EVEN));
+        location.setLongitude(new BigDecimal(request.getParameter("longitude")).setScale(6, RoundingMode.HALF_EVEN));
+
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(location);
+
+        if (violations.isEmpty()) {
+            superDao.editLocation(location);
+            return "redirect:locations";
+        } else {
+            model.addAttribute("location", location);
+            model.addAttribute("errors", violations);
+            return "editLocation";
+        }
+
     }
 
-        @GetMapping("deleteLocation/{id}")
+    @GetMapping("deleteLocation/{id}")
     public String deleteLocation(@PathVariable Integer id) {
         superDao.removeLocation(id);
         return "redirect:/locations";

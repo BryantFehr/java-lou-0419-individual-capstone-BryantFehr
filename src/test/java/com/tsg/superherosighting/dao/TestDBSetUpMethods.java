@@ -33,10 +33,10 @@ public class TestDBSetUpMethods {
     public void populateDB() {
         JdbcTemplate heySql = testDao.getHeySql();
         // locations
-        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('1', 'Batcave', 'roomy', 'Manor', '10.00000001', '10.00000001')");
-        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('2', 'Asylum', 'tight', 'Jail', '20.00000002', '20.00000002')");
-        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('3', 'JusticeHQ', 'tall', 'big', '30.00000003', '30.00000003')");
-        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('4', 'Sewer', 'narrow', 'sewage', '40.00000004', '40.00000004')");
+        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('1', 'Batcave', 'roomy', 'Manor', '10.123456', '110.123456')");
+        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('2', 'Asylum', 'tight', 'Jail', '20.123456', '120.123456')");
+        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('3', 'JusticeHQ', 'tall', 'big', '30.123456', '130.123456')");
+        heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('4', 'Sewer', 'narrow', 'sewage', '40.123456', '140.123456')");
 
         // heroes
         heySql.execute("INSERT INTO `heroes` (`Id`, `HeroName`, `IsHero`, `Description`) VALUES ('1', 'Batman', '1', 'batty')");
@@ -66,9 +66,9 @@ public class TestDBSetUpMethods {
         heySql.execute("INSERT INTO `sightings` (`Id`, `LocId`, `DateTime`) VALUES ('2', '2', '2019-01-17 23:12:01')");
 
         // heroes and sightings
-        heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1', '1')");
-        heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1')");
-        heySql.execute("INSERT INTO `superheroes`.`heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2')");
+        heySql.execute("INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('1', '1', '1')");
+        heySql.execute("INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('2', '2', '1')");
+        heySql.execute("INSERT INTO `heroesandsightings` (`Id`, `HeroId`, `SightingId`) VALUES ('3', '2', '2')");
 
         heySql.execute("INSERT INTO `locations` (`Id`, `LocName`, `Description`, `Address`, `Latitude`, `Longitude`) VALUES ('-1', 'NA', 'NA', 'NA', '00.00000000', '00.00000000')");
     }

@@ -45,7 +45,7 @@ public class SightingsTest extends TestDBSetUpMethods {
         testLoc.setDescription("testy");
         testLoc.setAddress("Nowhere lane");
 
-        BigDecimal latLong = new BigDecimal("10.00000001");
+        BigDecimal latLong = new BigDecimal("10.123456");
         testLoc.setLatitude(latLong);
         testLoc.setLongitude(latLong);
         testDao.addLocation(testLoc);
@@ -114,7 +114,7 @@ public class SightingsTest extends TestDBSetUpMethods {
         testLoc.setDescription("testy");
         testLoc.setAddress("Nowhere lane");
 
-        BigDecimal latLong = new BigDecimal("10.00000001");
+        BigDecimal latLong = new BigDecimal("10.123456");
         testLoc.setLatitude(latLong);
         testLoc.setLongitude(latLong);
         testDao.addLocation(testLoc);
