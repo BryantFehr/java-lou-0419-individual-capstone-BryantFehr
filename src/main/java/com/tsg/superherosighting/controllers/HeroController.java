@@ -7,6 +7,7 @@ package com.tsg.superherosighting.controllers;
 
 import com.tsg.superherosighting.dao.SuperDaoDBJdbcImpl;
 import com.tsg.superherosighting.dto.Hero;
+import com.tsg.superherosighting.dto.Sighting;
 import com.tsg.superherosighting.dto.SuperPower;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -127,9 +129,16 @@ public class HeroController {
     }
 
     @GetMapping("deleteHero/{id}")
-    public String deleteHero(@PathVariable Integer id) {
-        superDao.removeHero(id);
-        return "redirect:/heroes";
+    @ResponseBody
+    public Hero deleteHero(@PathVariable Integer id) {
+        Hero toRemove = superDao.getAHero(id);
+        if (toRemove != null) {
+            superDao.removeHero(id);
+            return toRemove;
+        } else {
+            return null;
+        }
+
     }
 
 }

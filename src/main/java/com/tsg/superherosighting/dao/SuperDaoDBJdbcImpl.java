@@ -327,7 +327,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         // location should already be inside of
         return sightings;
     }
-    
+
     @Override
     public List<Sighting> get10RecentSightings() {
         final String GET_10_RECENT_SIGHTINGS = "SELECT * FROM sightings ORDER BY DateTime DESC LIMIT 10";

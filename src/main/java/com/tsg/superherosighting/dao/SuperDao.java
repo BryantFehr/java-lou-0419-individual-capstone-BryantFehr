@@ -105,7 +105,7 @@ public interface SuperDao {
     public Sighting getASighting(int id);
 
     public List<Sighting> getAllSightings();
-    
+
     public List<Sighting> get10RecentSightings();
 
     public void editSighting(Sighting sighting);

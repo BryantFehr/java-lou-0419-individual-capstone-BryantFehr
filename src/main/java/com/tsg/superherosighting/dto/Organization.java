@@ -24,21 +24,20 @@ import lombok.NoArgsConstructor;
 public class Organization {
 
     private int id;
-    
+
     @NotBlank(message = "Name must not be empty.")
     @Size(max = 100, message = "Max characters for name is 100.")
     private String name;
-    
+
     @Size(max = 250, message = "Max characters for description is 250.")
     private String description;
-    
+
     @NotBlank(message = "Contact info cannot be empty. Type NA if no contact info is available.")
     @Size(max = 50, message = "Max characters for contact is 50.")
     private String contact;
-    
-    
+
     private List<Hero> heroesInOrg = new ArrayList();
-    
+
     @NotNull(message = "Location cannot be null. Choose NA if no location info is available.")
     private Location orgLoc;
 

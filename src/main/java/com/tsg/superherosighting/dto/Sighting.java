@@ -25,13 +25,13 @@ import lombok.NoArgsConstructor;
 public class Sighting {
 
     private int id;
-    
+
     @PastOrPresent(message = "You are not a time traveler. Sightings cannot be in the future.")
     private LocalDateTime dateTime;
-    
+
     @NotEmpty(message = "Sighting should have at least 1 hero.")
     private List<Hero> heroesAtSighting = new ArrayList();
-    
+
     @NotNull(message = "Location cannot be null.")
     private Location sightLocation;
 

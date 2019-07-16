@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class SuperPower {
 
     private int id;
-    
+
     @Size(max = 100, message = "Name must be lass than 100 characters.")
     @NotBlank(message = "Name must not be empty.")
     private String name;

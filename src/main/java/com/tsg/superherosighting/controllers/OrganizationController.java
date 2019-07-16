@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -30,12 +31,12 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class OrganizationController {
-
+    
     @Autowired
     SuperDaoDBJdbcImpl superDao;
-
+    
     Set<ConstraintViolation<Organization>> violations = new HashSet<>();
-
+    
     @GetMapping("organizations")
     public String displayOrgs(Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
@@ -47,76 +48,76 @@ public class OrganizationController {
         model.addAttribute("errors", violations);
         return "organizations";
     }
-
+    
     @PostMapping("addOrganization")
     public String addOrganization(HttpServletRequest request) {
         String name = request.getParameter("name");
         String[] heroIds = request.getParameterValues("heroId");
-
+        
         List<Hero> heroes = new ArrayList<>();
         if (heroIds != null) {
             for (String heroId : heroIds) {
                 heroes.add(superDao.getAHero(Integer.parseInt(heroId)));
             }
         }
-
+        
         String description = request.getParameter("description");
         String contact = request.getParameter("contact");
         String locId = request.getParameter("locationId");
-
+        
         Organization org = new Organization();
         org.setName(name);
         org.setDescription(description);
         org.setContact(contact);
         org.setOrgLoc(superDao.getALocation(Integer.parseInt(locId)));
-
+        
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(org);
-
+        
         if (violations.isEmpty()) {
             superDao.addOrganization(org);
             superDao.addHeroesToOrg(heroes, org.getId());
         }
         return "redirect:organizations";
     }
-
+    
     @GetMapping("editOrganization")
     public String editOrganization(HttpServletRequest request, Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
         List<Location> locations = superDao.getAllLocations();
-
+        
         int id = Integer.parseInt(request.getParameter("id"));
         Organization organization = superDao.getAnOrganization(id);
-
+        
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
         model.addAttribute("organization", organization);
         model.addAttribute("errors", violations);
-
+        
         return "editOrganization";
     }
-
+    
     @PostMapping("editOrganization")
     public String performEditOrganization(HttpServletRequest request, Model model) {
         int id = Integer.parseInt(request.getParameter("id"));
         Organization organization = superDao.getAnOrganization(id);
         organization.setHeroesInOrg(new ArrayList<>());
         String[] heroIds = request.getParameterValues("heroId");
-
+        
         List<Hero> heroes = new ArrayList<>();
         if (heroIds != null) {
             for (String heroId : heroIds) {
                 heroes.add(superDao.getAHero(Integer.parseInt(heroId)));
             }
         }
-
+        
         String locId = request.getParameter("locationId");
-
+        
         organization.setName(request.getParameter("name"));
         organization.setDescription(request.getParameter("description"));
         organization.setContact(request.getParameter("contact"));
         organization.setOrgLoc(superDao.getALocation(Integer.parseInt(locId)));
-
+        
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(organization);
         if (violations.isEmpty()) {
@@ -134,10 +135,16 @@ public class OrganizationController {
             return "editOrganization";
         }
     }
-
+    
     @GetMapping("deleteOrganization/{id}")
-    public String deleteOrganization(@PathVariable Integer id) {
-        superDao.removeOrganization(id);
-        return "redirect:/organizations";
+    @ResponseBody
+    public Organization deleteOrganization(@PathVariable Integer id) {
+        Organization toRemove = superDao.getAnOrganization(id);
+        if (toRemove != null) {
+            superDao.removeOrganization(id);
+            return toRemove;
+        } else {
+            return null;
+        }
     }
 }
