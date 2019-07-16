@@ -107,7 +107,7 @@
                                 Time</label>
                             <div class="col-9">
                                 <div id="sighttime" class="input-append">
-                                    <input type="datetime-local" name="sighttime" th:value="${sighting.dateTime}" min="1934-01-01T00:01" required/>
+                                    <input type="datetime-local" name="sighttime" th:value="${sighting.dateTime}" min="1934-01-01T00:01" th:max="${currentTime}" required/>
                                     
                                 </div>
                             </div>
@@ -117,11 +117,11 @@
                             <label for="location" class="col-3 col-form-label">
                                 Location</label>
                             <div class="col-9">
-                                <select id="location" name="locationId" class="form-control" >
-                                    <option th:each="location : ${locations}" 
-                                            th:value="${location.id}" 
-                                            th:text="${location.name}"
-                                            th:selected="${sighting.sightLocation.id == location.id}">
+                                <select id="alocation" name="locationId" class="form-control" >
+                                    <option th:each="alocation : ${locations}" 
+                                            th:value="${alocation.id}" 
+                                            th:text="${alocation.name}"
+                                            th:selected="${sighting.sightLocation.id == alocation.id}">
                                         Location Name</option>
                                 </select>
                             </div>
@@ -129,6 +129,9 @@
                         <input type="hidden" name="id" th:value="${sighting.id}"/>
                         <div class="col-9">
                             <button type="submit" class="btn btn-success">Edit Sighting</button>
+                            <button type="button" onclick="location.href = 'sightings'" class="btn btn-success">
+                                Cancel
+                            </button>
                         </div> 
                     </form>
                 </div>

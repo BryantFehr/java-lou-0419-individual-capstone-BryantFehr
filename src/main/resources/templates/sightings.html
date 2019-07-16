@@ -106,7 +106,7 @@
                                 Time</label>
                             <div class="col-9">
                                 <div id="sighttime" class="input-append">
-                                    <input type="datetime-local" name="sighttime" th:value="${currentTime}" min="1934-01-01T00:01" required/>
+                                    <input type="datetime-local" name="sighttime" th:value="${currentTime}" min="1934-01-01T00:01" th:max="${currentTime}" required/>
 
                                 </div>
                             </div>
@@ -181,16 +181,18 @@
         crossorigin="anonymous"></script>
 
         <script>
-    
-            function deleteSighting(id) {
-        $.ajax ({
-            type: 'GET',
-            url: "http://localhost:8080/deleteSighting/" + id,
-            success: function (status) {
-                window.location.reload();
-            }
-        });
-    }
+
+                                function deleteSighting(id) {
+                                    if (confirm("Press OK to confirm deletion. Cancel to abort.")) {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: "http://localhost:8080/deleteSighting/" + id,
+                                            success: function (status) {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
+                                }
         </script>
     </body>
 

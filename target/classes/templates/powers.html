@@ -143,13 +143,15 @@
         <script>
 
                                 function deletePower(id) {
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: "http://localhost:8080/deletePower/" + id,
-                                        success: function (status) {
-                                            window.location.reload();
-                                        }
-                                    });
+                                    if (confirm("Press OK to confirm deletion. Cancel to abort.")) {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: "http://localhost:8080/deletePower/" + id,
+                                            success: function (status) {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
                                 }
         </script>
     </body>

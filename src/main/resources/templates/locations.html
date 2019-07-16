@@ -180,13 +180,15 @@
         <script>
 
                                 function deleteLocation(id) {
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: "http://localhost:8080/deleteLocation/" + id,
-                                        success: function (status) {
-                                            window.location.reload();
-                                        }
-                                    });
+                                    if (confirm("Press OK to confirm deletion. Cancel to abort.")) {
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: "http://localhost:8080/deleteLocation/" + id,
+                                            success: function (status) {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
                                 }
         </script>
     </body>

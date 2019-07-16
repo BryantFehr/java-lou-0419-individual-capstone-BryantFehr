@@ -40,7 +40,7 @@ public class LocationController {
         List<Location> locations = superDao.getAllLocations();
         Location naLocation = superDao.getALocation(-1);
         locations.remove(naLocation);
-        
+
         model.addAttribute("locations", locations);
         model.addAttribute("errors", violations);
         return "locations";
@@ -58,8 +58,12 @@ public class LocationController {
         location.setName(name);
         location.setAddress(address);
         location.setDescription(description);
-        location.setLatitude(new BigDecimal(latAsString).setScale(6, RoundingMode.HALF_EVEN));
-        location.setLongitude(new BigDecimal(longAsString).setScale(6, RoundingMode.HALF_EVEN));
+        if (!latAsString.isEmpty()) {
+            location.setLatitude(new BigDecimal(latAsString).setScale(6, RoundingMode.HALF_EVEN));
+        }
+        if (!longAsString.isEmpty()) {
+            location.setLongitude(new BigDecimal(longAsString).setScale(6, RoundingMode.HALF_EVEN));
+        }
 
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);

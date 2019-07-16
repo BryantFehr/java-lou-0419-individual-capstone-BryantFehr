@@ -93,15 +93,15 @@ public class SightingController {
     public String editSighting(HttpServletRequest request, Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
         List<Location> locations = superDao.getAllLocations();
+        Location naLocation = superDao.getALocation(-1);
+        locations.remove(naLocation);
 
         int id = Integer.parseInt(request.getParameter("id"));
         Sighting sighting = superDao.getASighting(id);
 
+        model.addAttribute("currentTime", LocalDateTime.now().withNano(0).withSecond(0));
         model.addAttribute("heroes", heroes);
         model.addAttribute("locations", locations);
-        Location naLocation = superDao.getALocation(-1);
-        locations.remove(naLocation);
-            
         model.addAttribute("sighting", sighting);
         model.addAttribute("errors", violations);
 
@@ -143,6 +143,7 @@ public class SightingController {
             Location naLocation = superDao.getALocation(-1);
             allLocs.remove(naLocation);
             
+            model.addAttribute("currentTime", LocalDateTime.now().withNano(0).withSecond(0));
             model.addAttribute("heroes", allHeroes);
             model.addAttribute("locations", allLocs);
             model.addAttribute("sighting", sighting);

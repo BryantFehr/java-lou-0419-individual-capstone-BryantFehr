@@ -124,15 +124,14 @@
                                     <option value="true">Hero</option>
                                     <option value="false">Villain</option>
                                 </select>
-                                <!--
-                                <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiotrue" value="true">Hero</label>
-                                <label class="radio-inline"><input type="radio" name="heroradio" id="heroradiofalse" value="false">Villain</label>
-                                -->
-                                </div> 
+                            </div> 
                         </div>
                         <input type="hidden" name="id" th:value="${hero.id}"/>
                         <div class="col-9">
                             <button type="submit" class="btn btn-success">Edit Hero</button>
+                            <button type="button" onclick="location.href = 'heroes'" class="btn btn-success">
+                                Cancel
+                            </button>
                         </div> 
                     </form>
                 </div>

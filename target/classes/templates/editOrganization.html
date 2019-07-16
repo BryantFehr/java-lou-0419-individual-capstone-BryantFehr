@@ -131,11 +131,11 @@
                             <label for="location" class="col-3 col-form-label">
                                 Location</label>
                             <div class="col-9">
-                                <select id="location" name="locationId" class="form-control" >
-                                    <option th:each="location : ${locations}" 
-                                            th:value="${location.id}" 
-                                            th:text="${location.name}"
-                                            th:selected="${organization.orgLoc.id == location.id}">
+                                <select id="alocation" name="locationId" class="form-control" >
+                                    <option th:each="alocation : ${locations}" 
+                                            th:value="${alocation.id}" 
+                                            th:text="${alocation.name}"
+                                            th:selected="${organization.orgLoc.id == alocation.id}">
                                         Location Name</option>
                                 </select>
                             </div>
@@ -143,6 +143,9 @@
                         <input type="hidden" name="id" th:value="${organization.id}"/>
                         <div class="col-9">
                             <button type="submit" class="btn btn-success">Edit Organization</button>
+                            <button type="button" onclick="location.href = 'organizations'" class="btn btn-success">
+                                Cancel
+                            </button>
                         </div> 
                     </form>
                 </div>
