@@ -25,7 +25,7 @@ public class HomeController {
     @Autowired
     SuperDaoDBJdbcImpl superDao;
 
-    @GetMapping("home")
+    @GetMapping({"home","/"})
     public String displayRecentSightings(Model model) {
         List<Hero> heroes = superDao.getAllHeroes();
         List<Location> locations = superDao.getAllLocations();
