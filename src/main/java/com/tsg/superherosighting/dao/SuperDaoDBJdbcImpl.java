@@ -67,7 +67,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public List<Hero> getAllHeroes() {
-        final String GET_ALL_HEROES = "SELECT * FROM heroes";
+        final String GET_ALL_HEROES = "SELECT * FROM Heroes";
         List<Hero> heroes = heySql.query(GET_ALL_HEROES, new HeroMapper());
         for (Hero aHero : heroes) {
             List<SuperPower> powersForHero = this.getAllPowersForHero(aHero.getId());
@@ -148,7 +148,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public List<Location> getAllLocations() {
-        final String GET_ALL_LOCATIONS = "SELECT * FROM locations";
+        final String GET_ALL_LOCATIONS = "SELECT * FROM Locations";
         List<Location> locations = heySql.query(GET_ALL_LOCATIONS, new LocMapper());
         return locations;
     }
@@ -232,7 +232,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public List<Organization> getAllOrganizations() {
-        final String GET_ALL_ORGS = "SELECT * FROM organizations";
+        final String GET_ALL_ORGS = "SELECT * FROM Organizations";
         List<Organization> orgs = heySql.query(GET_ALL_ORGS, new OrgMapper());
         for (Organization org : orgs) {
             List<Hero> heroesForOrgs = this.getAllHeroesForOrg(org.getId());
@@ -318,7 +318,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public List<Sighting> getAllSightings() {
-        final String GET_ALL_SIGHTINGS = "SELECT * FROM sightings";
+        final String GET_ALL_SIGHTINGS = "SELECT * FROM Sightings";
         List<Sighting> sightings = heySql.query(GET_ALL_SIGHTINGS, new SightingMapper());
         for (Sighting aSighting : sightings) {
             List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
