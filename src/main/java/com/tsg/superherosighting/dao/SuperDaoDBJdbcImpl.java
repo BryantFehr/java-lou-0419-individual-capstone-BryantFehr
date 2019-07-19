@@ -49,7 +49,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Hero addHero(Hero hero) {
-        final String INSERT_HERO_INTO_HEROES = "INSERT INTO heroes (HeroName, IsHero, Description) VALUES (?,?,?)";
+        final String INSERT_HERO_INTO_HEROES = "INSERT INTO Heroes (HeroName, IsHero, Description) VALUES (?,?,?)";
         heySql.update(INSERT_HERO_INTO_HEROES, hero.getName(), hero.getIsHero(), hero.getDescription());
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         hero.setId(newId);
@@ -58,7 +58,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public Hero getAHero(int id) {
-        final String GET_A_SINGLE_HERO = "SELECT * FROM heroes WHERE id = ?";
+        final String GET_A_SINGLE_HERO = "SELECT * FROM Heroes WHERE id = ?";
         Hero aHero = heySql.queryForObject(GET_A_SINGLE_HERO, new HeroMapper(), id);
         List<SuperPower> powersForHero = this.getAllPowersForHero(aHero.getId());
         aHero.setHeroPowers(powersForHero);
@@ -79,7 +79,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editHero(Hero hero) {
-        final String SQL_UPDATE_A_HERO = "UPDATE heroes "
+        final String SQL_UPDATE_A_HERO = "UPDATE Heroes "
                 + "SET HeroName = ?, IsHero = ?, Description = ? "
                 + "WHERE Id = ?";
 
@@ -98,7 +98,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         this.removeAllOrgsFromHero(id);
         this.removeAllSightingsFromHero(id);
         this.removeSightingsWithNoHeroes();
-        final String SQL_DELETE_HERO = "DELETE FROM heroes WHERE id = ?";
+        final String SQL_DELETE_HERO = "DELETE FROM Heroes WHERE id = ?";
         heySql.update(SQL_DELETE_HERO, id);
     }
 
@@ -132,7 +132,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Location addLocation(Location location) {
-        final String INSERT_LOCATION_INTO_LOCATIONS = "INSERT INTO locations (LocName, Description, Address, Latitude, Longitude) VALUES (?, ?, ?, ?, ?)";
+        final String INSERT_LOCATION_INTO_LOCATIONS = "INSERT INTO Locations (LocName, Description, Address, Latitude, Longitude) VALUES (?, ?, ?, ?, ?)";
         heySql.update(INSERT_LOCATION_INTO_LOCATIONS, location.getName(), location.getDescription(), location.getAddress(), location.getLatitude(), location.getLongitude());
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         location.setId(newId);
@@ -141,7 +141,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public Location getALocation(int id) {
-        final String GET_A_SINGLE_LOCATION = "SELECT * FROM locations WHERE id = ?";
+        final String GET_A_SINGLE_LOCATION = "SELECT * FROM Locations WHERE id = ?";
         Location aLoc = heySql.queryForObject(GET_A_SINGLE_LOCATION, new LocMapper(), id);
         return aLoc;
     }
@@ -155,7 +155,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editLocation(Location location) {
-        String EDIT_A_LOC = "UPDATE locations "
+        String EDIT_A_LOC = "UPDATE Locations "
                 + "SET LocName = ?, Description = ?, Address = ?, Latitude = ?, Longitude = ? "
                 + "WHERE Id = ?";
         heySql.update(EDIT_A_LOC, location.getName(), location.getDescription(), location.getAddress(),
@@ -176,7 +176,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
         this.removeSightingsFromBridge(sightsToRemove);
         this.deleteSightings(sightsToRemove);
 
-        String DELETE_LOC = "DELETE FROM locations WHERE Id = ?";
+        String DELETE_LOC = "DELETE FROM Locations WHERE Id = ?";
         heySql.update(DELETE_LOC, id);
 
     }
@@ -213,7 +213,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Organization addOrganization(Organization organization) {
-        final String INSERT_ORG_INTO_ORGANIZATIONS = "INSERT INTO organizations (LocId, OrgName, Description, Contact) VALUES (?, ?, ?, ?)";
+        final String INSERT_ORG_INTO_ORGANIZATIONS = "INSERT INTO Organizations (LocId, OrgName, Description, Contact) VALUES (?, ?, ?, ?)";
         heySql.update(INSERT_ORG_INTO_ORGANIZATIONS, organization.getOrgLoc().getId(), organization.getName(), organization.getDescription(), organization.getContact());
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         organization.setId(newId);
@@ -222,7 +222,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public Organization getAnOrganization(int id) {
-        final String GET_A_SINGLE_ORG = "SELECT * FROM organizations WHERE id = ?";
+        final String GET_A_SINGLE_ORG = "SELECT * FROM Organizations WHERE id = ?";
         Organization organization = heySql.queryForObject(GET_A_SINGLE_ORG, new OrgMapper(), id);
         List<Hero> HeroesForOrg = this.getAllHeroesForOrg(organization.getId());
         organization.setHeroesInOrg(HeroesForOrg);
@@ -244,7 +244,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editOrganization(Organization organization) {
-        final String SQL_UPDATE_ORG = "UPDATE organizations "
+        final String SQL_UPDATE_ORG = "UPDATE Organizations "
                 + "SET LocId = ?, OrgName = ?, Description = ?, Contact = ? "
                 + "WHERE Id = ?";
 
@@ -254,7 +254,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
         this.removeAllHeroesFromOrg(organization.getId());
         this.addHeroesToOrg(organization.getHeroesInOrg(), organization.getId());
-        // remove heroes then add heroes
+        // remove Heroes then add heroes
     }
 
     @Override
@@ -262,7 +262,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     public void removeOrganization(int id) {
         // remove association with heroes
         this.removeAllHeroesFromOrg(id);
-        final String SQL_DELETE_ORG = "DELETE FROM organizations WHERE id = ?";
+        final String SQL_DELETE_ORG = "DELETE FROM Organizations WHERE id = ?";
         heySql.update(SQL_DELETE_ORG, id);
     }
 
@@ -298,7 +298,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public Sighting addSighting(Sighting sighting) {
-        final String INSERT_SIGHTING_INTO_SIGHTINGS = "INSERT INTO sightings (LocId, DateTime) VALUES (?, ?)";
+        final String INSERT_SIGHTING_INTO_SIGHTINGS = "INSERT INTO Sightings (LocId, DateTime) VALUES (?, ?)";
         heySql.update(INSERT_SIGHTING_INTO_SIGHTINGS, sighting.getSightLocation().getId(), sighting.getDateTime().withNano(0));
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setId(newId);
@@ -307,7 +307,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public Sighting getASighting(int id) {
-        final String GET_A_SINGLE_SIGHTING = "SELECT * FROM sightings WHERE id = ?";
+        final String GET_A_SINGLE_SIGHTING = "SELECT * FROM Sightings WHERE id = ?";
         Sighting aSighting = heySql.queryForObject(GET_A_SINGLE_SIGHTING, new SightingMapper(), id);
         List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
         aSighting.setHeroesAtSighting(heroesAtSighting);
@@ -330,7 +330,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public List<Sighting> get10RecentSightings() {
-        final String GET_10_RECENT_SIGHTINGS = "SELECT * FROM sightings ORDER BY DateTime DESC LIMIT 10";
+        final String GET_10_RECENT_SIGHTINGS = "SELECT * FROM Sightings ORDER BY DateTime DESC LIMIT 10";
         List<Sighting> recentSightings = heySql.query(GET_10_RECENT_SIGHTINGS, new SightingMapper());
         for (Sighting aSighting : recentSightings) {
             List<Hero> heroesAtSighting = this.getAllHeroesForSighting(aSighting.getId());
@@ -342,7 +342,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editSighting(Sighting sighting) {
-        final String SQL_UPDATE_SIGHTING = "UPDATE sightings "
+        final String SQL_UPDATE_SIGHTING = "UPDATE Sightings "
                 + "SET LocId = ?, DateTime = ? "
                 + "WHERE Id = ?";
 
@@ -357,7 +357,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public void removeSighting(int id) {
         this.removeAllHeroesFromSightings(id);
-        final String SQL_DELETE_SIGHTING = "DELETE FROM sightings WHERE Id = ?";
+        final String SQL_DELETE_SIGHTING = "DELETE FROM Sightings WHERE Id = ?";
         heySql.update(SQL_DELETE_SIGHTING, id);
     }
 
@@ -395,7 +395,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Override
     @Transactional
     public SuperPower addSuperpower(SuperPower superpower) {
-        final String INSERT_POWER_INTO_POWERS = "INSERT INTO superpowers (PowerName) VALUES (?)";
+        final String INSERT_POWER_INTO_POWERS = "INSERT INTO Superpowers (PowerName) VALUES (?)";
         heySql.update(INSERT_POWER_INTO_POWERS, superpower.getName());
         int newId = heySql.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         superpower.setId(newId);
@@ -418,7 +418,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     @Override
     public void editSuperpower(SuperPower superpower) {
-        final String UPDATE_A_POWER = "UPDATE superpowers "
+        final String UPDATE_A_POWER = "UPDATE Superpowers "
                 + "SET PowerName = ? "
                 + "WHERE Id = ?";
 
@@ -429,7 +429,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     @Transactional
     public void removeSuperpower(int id) {
         this.removeAllHeroesFromPower(id);
-        final String DELETE_POWER = "DELETE FROM superpowers WHERE Id = ?";
+        final String DELETE_POWER = "DELETE FROM Superpowers WHERE Id = ?";
         heySql.update(DELETE_POWER, id);
     }
 
@@ -460,18 +460,18 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     /////////////////////////// HERO HELPERS ///////////////////////////
     public List<SuperPower> getAllPowersForHero(int heroId) {
         String SQL_POWERS_FOR_HERO = "SELECT * FROM SuperPowers "
-                + "JOIN heroesandsuperpowers ON heroesandsuperpowers.SuperPowerId = superpowers.Id "
-                + "WHERE heroesandsuperpowers.HeroId = ?";
+                + "JOIN HeroesAndSuperPowers ON HeroesAndSuperPowers.SuperPowerId = SuperPowers.Id "
+                + "WHERE HeroesAndSuperPowers.HeroId = ?";
         return heySql.query(SQL_POWERS_FOR_HERO, new PowerMapper(), heroId);
     }
 
     public void removeAllPowersFromHero(int heroId) {
-        String SQL_REMOVE_POWERS_FROM_HERO = "DELETE FROM heroesandsuperpowers WHERE HeroId = ?";
+        String SQL_REMOVE_POWERS_FROM_HERO = "DELETE FROM HeroesAndSuperPowers WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_POWERS_FROM_HERO, heroId);
     }
 
     public void addPowerToHero(int heroId, int superPowerId) {
-        String SQL_HERO_POWER = "INSERT INTO heroesandsuperpowers (HeroId, SuperPowerId) VALUES (?, ?)";
+        String SQL_HERO_POWER = "INSERT INTO HeroesAndSuperPowers (HeroId, SuperPowerId) VALUES (?, ?)";
         heySql.update(SQL_HERO_POWER, heroId, superPowerId);
     }
 
@@ -482,12 +482,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     }
 
     public void removeAllOrgsFromHero(int heroId) {
-        String SQL_REMOVE_ORGS_FROM_HERO = "DELETE FROM heroesandorganizations WHERE HeroId = ?";
+        String SQL_REMOVE_ORGS_FROM_HERO = "DELETE FROM HeroesAndOrganizations WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_ORGS_FROM_HERO, heroId);
     }
 
     public void removeAllSightingsFromHero(int heroId) {
-        String SQL_REMOVE_SIGHTINGS_FROM_HERO = "DELETE FROM heroesandsightings WHERE HeroId = ?";
+        String SQL_REMOVE_SIGHTINGS_FROM_HERO = "DELETE FROM HeroesAndSightings WHERE HeroId = ?";
         heySql.update(SQL_REMOVE_SIGHTINGS_FROM_HERO, heroId);
     }
 
@@ -502,12 +502,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     /////////////////////////// LOCATION HELPERS ///////////////////////////
     private void updateOrgLocationToNA(int locId) {
-        String SQL_UPDATE_ORG_BY_LOCID = "UPDATE organizations SET LocId = '-1' WHERE LocId = ?";
+        String SQL_UPDATE_ORG_BY_LOCID = "UPDATE Organizations SET LocId = '-1' WHERE LocId = ?";
         heySql.update(SQL_UPDATE_ORG_BY_LOCID, locId);
     }
 
     private void deleteSightings(List<Sighting> sightsToRemove) {
-        String DELETE_SIGHTING_WITH_LOC = "DELETE FROM sightings WHERE Id = ?";
+        String DELETE_SIGHTING_WITH_LOC = "DELETE FROM Sightings WHERE Id = ?";
         for (Sighting aSighting : sightsToRemove) {
             heySql.update(DELETE_SIGHTING_WITH_LOC, aSighting.getId());
         }
@@ -515,9 +515,9 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     /////////////////////////// ORG HELPERS ///////////////////////////
     public List<Hero> getAllHeroesForOrg(int orgId) {
-        String SQL_HEROES_FOR_ORG = "SELECT * FROM heroes "
-                + "JOIN heroesandorganizations ON heroesandorganizations.HeroId = heroes.Id "
-                + "WHERE heroesandorganizations.OrgId = ?";
+        String SQL_HEROES_FOR_ORG = "SELECT * FROM Heroes "
+                + "JOIN HeroesAndOrganizations ON HeroesAndOrganizations.HeroId = Heroes.Id "
+                + "WHERE HeroesAndOrganizations.OrgId = ?";
         List<Hero> orgHeroes = heySql.query(SQL_HEROES_FOR_ORG, new HeroMapper(), orgId);
 
         for (Hero aHero : orgHeroes) {
@@ -528,12 +528,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     }
 
     public void removeAllHeroesFromOrg(int orgId) {
-        String REMOVE_HEROES_FROM_ORG = "DELETE FROM heroesandorganizations WHERE OrgId = ?";
+        String REMOVE_HEROES_FROM_ORG = "DELETE FROM HeroesAndOrganizations WHERE OrgId = ?";
         heySql.update(REMOVE_HEROES_FROM_ORG, orgId);
     }
 
     public void addHeroToOrg(int heroId, int orgId) {
-        String SQL_ORG_HERO = "INSERT INTO heroesandorganizations (HeroId, OrgId) VALUES (?, ?)";
+        String SQL_ORG_HERO = "INSERT INTO HeroesAndOrganizations (HeroId, OrgId) VALUES (?, ?)";
         heySql.update(SQL_ORG_HERO, heroId, orgId);
     }
 
@@ -545,14 +545,14 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     /////////////////////////// SIGHTINGS HELPERS ///////////////////////////
     public void removeAllHeroesFromSightings(int sightingId) {
-        String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM heroesandsightings WHERE SightingId = ?";
+        String REMOVE_SIGHTINGS_FROM_HEROES = "DELETE FROM HeroesAndSightings WHERE SightingId = ?";
         heySql.update(REMOVE_SIGHTINGS_FROM_HEROES, sightingId);
     }
 
     public List<Hero> getAllHeroesForSighting(int sightId) {
-        String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM heroes "
-                + "JOIN heroesandsightings ON heroesandsightings.HeroId = heroes.Id "
-                + "WHERE heroesandsightings.SightingId = ?";
+        String SQL_HEROES_FOR_SIGHTING = "SELECT * FROM Heroes "
+                + "JOIN HeroesAndSightings ON HeroesAndSightings.HeroId = Heroes.Id "
+                + "WHERE HeroesAndSightings.SightingId = ?";
         List<Hero> sightHeroes = heySql.query(SQL_HEROES_FOR_SIGHTING, new HeroMapper(), sightId);
         for (Hero aHero : sightHeroes) {
             List<SuperPower> heroesPowers = this.getAllPowersForHero(aHero.getId());
@@ -563,7 +563,7 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
     }
 
     public void addHeroToSighting(int heroId, int sightingId) {
-        String SQL_SIGHTING_HERO = "INSERT INTO heroesandsightings (HeroId, SightingId) VALUES (?, ?)";
+        String SQL_SIGHTING_HERO = "INSERT INTO HeroesAndSightings (HeroId, SightingId) VALUES (?, ?)";
         heySql.update(SQL_SIGHTING_HERO, heroId, sightingId);
     }
 
@@ -575,12 +575,12 @@ public class SuperDaoDBJdbcImpl implements SuperDao {
 
     /////////////////////////// POWER HELPERS ///////////////////////////
     public void removeAllHeroesFromPower(int powerId) {
-        String REMOVE_HEROES_FROM_POWER = "DELETE FROM heroesandsuperpowers WHERE SuperPowerId = ?";
+        String REMOVE_HEROES_FROM_POWER = "DELETE FROM HeroesAndSuperPowers WHERE SuperPowerId = ?";
         heySql.update(REMOVE_HEROES_FROM_POWER, powerId);
     }
 
     private void removeSightingsFromBridge(List<Sighting> sightsToRemove) {
-        String DELETE_SIGHTING_FROM_BRIDGE = "DELETE FROM heroesandsightings WHERE SightingId = ?";
+        String DELETE_SIGHTING_FROM_BRIDGE = "DELETE FROM HeroesAndSightings WHERE SightingId = ?";
         for (Sighting aSighting : sightsToRemove) {
             heySql.update(DELETE_SIGHTING_FROM_BRIDGE, aSighting.getId());
         }
